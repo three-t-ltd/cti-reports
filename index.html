@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>æ ªå¼ä¼ç¤¾CTI æ´»åå ±åã¢ã¼ã«ã¤ã</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@300;400;500;700;900&display=swap');
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: 'Noto Sans JP', sans-serif; background: #f0f4f8; color: #2d3748; line-height: 1.8; min-height: 100vh; display: flex; flex-direction: column; }
+        .hero { background: linear-gradient(135deg, #1a365d 0%, #2b6cb0 50%, #3182ce 100%); color: white; text-align: center; padding: 60px 20px 50px; }
+        .hero h1 { font-size: 2.2rem; font-weight: 900; margin-bottom: 8px; text-shadow: 0 2px 8px rgba(0,0,0,0.2); }
+        .hero p { font-size: 1rem; opacity: 0.85; }
+        .container { max-width: 800px; margin: 0 auto; padding: 40px 20px; flex: 1; }
+        .report-card { background: white; border-radius: 14px; padding: 28px 32px; margin-bottom: 20px; box-shadow: 0 2px 12px rgba(0,0,0,0.06); display: flex; justify-content: space-between; align-items: center; text-decoration: none; color: inherit; transition: box-shadow 0.2s, transform 0.2s; }
+        .report-card:hover { box-shadow: 0 6px 24px rgba(0,0,0,0.12); transform: translateY(-2px); }
+        .report-info h3 { font-size: 1.2rem; font-weight: 700; color: #1a365d; margin-bottom: 4px; }
+        .report-info p { font-size: 0.9rem; color: #718096; }
+        .badge { display: inline-block; padding: 3px 12px; border-radius: 12px; font-size: 0.75rem; font-weight: 700; }
+        .badge.lock { background: #bee3f8; color: #2a4365; }
+        .badge.external { background: #feebc8; color: #7b341e; }
+        .arrow { font-size: 1.4rem; color: #a0aec0; }
+        footer { text-align: center; padding: 24px; font-size: 0.8rem; color: #a0aec0; }
+        @media (max-width: 600px) { .hero h1 { font-size: 1.6rem; } .report-card { flex-direction: column; align-items: flex-start; gap: 12px; } }
+    </style>
+</head>
+<body>
+<div class="hero">
+    <h1>ð¢ æ ªå¼ä¼ç¤¾CTI</h1>
+    <p>æ´»åå ±åã¢ã¼ã«ã¤ã</p>
+</div>
+<div class="container">
+    <a class="report-card" href="./2026-03/">
+        <div class="report-info">
+            <h3>2026å¹´3æåº¦ æ´»åå ±åãµããªã¼</h3>
+            <p>åºç¤æ´åã®æ â HPæ´æ°å®äºã»Instagramå®å®éç¨</p>
+            <span class="badge lock">ð ãã¹ã¯ã¼ãä¿è­·</span>
+        </div>
+        <span class="arrow">â</span>
+    </a>
+    <a class="report-card" href="https://pvzfjzkb.gensparkspace.com" target="_blank" rel="noopener">
+        <div class="report-info">
+            <h3>2026å¹´2æåº¦ æ´»åå ±åãµããªã¼</h3>
+            <p>æ¡ç¨åºåã®ææã¨ç¤¾åä½å¶ã®æ´å</p>
+            <span class="badge external">ð å¤é¨ãªã³ã¯ï¼ãã¹ã¯ã¼ãå¿è¦ï¼</span>
+        </div>
+        <span class="arrow">â</span>
+    </a>
+</div>
+<footer>Powered by three.Tååä¼ç¤¾</footer>
+</body>
+</html>
