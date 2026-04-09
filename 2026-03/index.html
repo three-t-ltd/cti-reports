@@ -1,0 +1,884 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>æ ªå¼ä¼ç¤¾CTI 2026å¹´3æåº¦ æ´»åå ±åãµããªã¼</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@300;400;500;700;900&display=swap');
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: 'Noto Sans JP', sans-serif; background: #f0f4f8; color: #2d3748; line-height: 1.8; }
+
+        /* Password Screen */
+        #auth-screen {
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: linear-gradient(135deg, #1a365d 0%, #2b6cb0 50%, #3182ce 100%);
+        }
+        .auth-card {
+            background: white;
+            border-radius: 20px;
+            padding: 48px 40px;
+            text-align: center;
+            box-shadow: 0 8px 40px rgba(0,0,0,0.2);
+            max-width: 420px;
+            width: 90%;
+        }
+        .lock-icon {
+            width: 64px; height: 64px;
+            background: #2b6cb0;
+            border-radius: 50%;
+            display: flex; align-items: center; justify-content: center;
+            margin: 0 auto 20px;
+            font-size: 1.8rem;
+        }
+        .auth-card h2 {
+            font-size: 1.4rem; font-weight: 700; color: #1a365d; margin-bottom: 8px;
+        }
+        .auth-card p {
+            font-size: 0.9rem; color: #718096; margin-bottom: 24px;
+        }
+        .auth-input {
+            width: 100%; padding: 14px 18px;
+            border: 2px solid #e2e8f0; border-radius: 10px;
+            font-size: 1rem; font-family: 'Noto Sans JP', sans-serif;
+            outline: none; transition: border-color 0.2s;
+        }
+        .auth-input:focus { border-color: #3182ce; }
+        .auth-btn {
+            width: 100%; padding: 14px;
+            background: #1a365d; color: white;
+            border: none; border-radius: 10px;
+            font-size: 1rem; font-weight: 700;
+            font-family: 'Noto Sans JP', sans-serif;
+            cursor: pointer; margin-top: 16px;
+            transition: background 0.2s;
+        }
+        .auth-btn:hover { background: #2b6cb0; }
+        .auth-error {
+            color: #e53e3e; font-size: 0.85rem;
+            margin-top: 12px; display: none;
+        }
+        .back-link {
+            display: inline-block; margin-top: 20px;
+            color: #a0aec0; font-size: 0.85rem; text-decoration: none;
+        }
+        .back-link:hover { color: #718096; }
+
+        /* Report Content (hidden by default) */
+        #report-content { display: none; }
+
+        @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@300;400;500;700;900&display=swap');
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            font-family: 'Noto Sans JP', sans-serif;
+            background: #f0f4f8;
+            color: #2d3748;
+            line-height: 1.8;
+        }
+
+        .hero {
+            background: linear-gradient(135deg, #1a365d 0%, #2b6cb0 50%, #3182ce 100%);
+            color: white;
+            text-align: center;
+            padding: 60px 20px 50px;
+        }
+
+        .hero .company {
+            font-size: 1.5rem;
+            font-weight: 700;
+            margin-bottom: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+        }
+
+        .hero h1 {
+            font-size: 2.2rem;
+            font-weight: 900;
+            margin-bottom: 6px;
+            text-shadow: 0 2px 8px rgba(0,0,0,0.2);
+        }
+
+        .hero .subtitle {
+            font-size: 0.95rem;
+            opacity: 0.85;
+        }
+
+        .hero .date-badge {
+            display: inline-block;
+            background: rgba(255,255,255,0.15);
+            padding: 4px 18px;
+            border-radius: 20px;
+            font-size: 0.9rem;
+            margin-top: 12px;
+        }
+
+        .container {
+            max-width: 960px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        /* Executive Summary */
+        .exec-summary {
+            background: white;
+            border-radius: 16px;
+            padding: 40px;
+            margin: -30px auto 30px;
+            max-width: 960px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+            position: relative;
+            z-index: 1;
+        }
+
+        .exec-summary h2 {
+            font-size: 1.5rem;
+            font-weight: 700;
+            margin-bottom: 16px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .exec-summary p {
+            font-size: 1rem;
+            color: #4a5568;
+            line-height: 1.9;
+        }
+
+        .exec-summary .bold {
+            font-weight: 700;
+            color: #1a365d;
+        }
+
+        /* KPI Cards */
+        .kpi-cards {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 20px;
+            margin: 30px auto;
+            max-width: 960px;
+            padding: 0 20px;
+        }
+
+        .kpi-card {
+            background: white;
+            border-radius: 12px;
+            padding: 24px;
+            text-align: center;
+            box-shadow: 0 2px 12px rgba(0,0,0,0.06);
+        }
+
+        .kpi-card .bar {
+            height: 8px;
+            border-radius: 4px;
+            margin-bottom: 12px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .kpi-card .bar::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            height: 100%;
+            border-radius: 4px;
+        }
+
+        .kpi-card.green .bar { background: #c6f6d5; }
+        .kpi-card.green .bar::before { background: #38a169; width: 100%; }
+        .kpi-card.green .icon { color: #38a169; }
+
+        .kpi-card.blue .bar { background: #bee3f8; }
+        .kpi-card.blue .bar::before { background: #3182ce; width: 80%; }
+        .kpi-card.blue .icon { color: #3182ce; }
+
+        .kpi-card.orange .bar { background: #feebc8; }
+        .kpi-card.orange .bar::before { background: #dd6b20; width: 60%; }
+        .kpi-card.orange .icon { color: #dd6b20; }
+
+        .kpi-card .icon {
+            font-size: 1.2rem;
+            margin-bottom: 4px;
+        }
+
+        .kpi-card .number {
+            font-size: 2.5rem;
+            font-weight: 900;
+            line-height: 1.2;
+        }
+
+        .kpi-card .label {
+            font-size: 0.85rem;
+            font-weight: 700;
+            color: #4a5568;
+        }
+
+        .kpi-card .sublabel {
+            font-size: 0.8rem;
+            color: #a0aec0;
+        }
+
+        /* Section */
+        section {
+            background: white;
+            border-radius: 16px;
+            padding: 36px 40px;
+            margin: 24px auto;
+            max-width: 960px;
+            box-shadow: 0 2px 12px rgba(0,0,0,0.06);
+        }
+
+        section h2 {
+            font-size: 1.4rem;
+            font-weight: 700;
+            margin-bottom: 24px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            color: #1a365d;
+        }
+
+        section h3 {
+            font-size: 1.1rem;
+            font-weight: 700;
+            margin: 20px 0 12px;
+            color: #2b6cb0;
+        }
+
+        /* Activity Item */
+        .activity-item {
+            background: #f7fafc;
+            border-radius: 10px;
+            padding: 20px 24px;
+            margin-bottom: 16px;
+            border-left: 4px solid #3182ce;
+        }
+
+        .activity-item.success { border-left-color: #38a169; }
+        .activity-item.warning { border-left-color: #dd6b20; }
+        .activity-item.info { border-left-color: #3182ce; }
+        .activity-item.paused { border-left-color: #a0aec0; }
+
+        .activity-item .title {
+            font-size: 1rem;
+            font-weight: 700;
+            margin-bottom: 6px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .activity-item .detail {
+            font-size: 0.9rem;
+            color: #4a5568;
+            margin-bottom: 6px;
+        }
+
+        .badge {
+            display: inline-block;
+            padding: 2px 10px;
+            border-radius: 12px;
+            font-size: 0.75rem;
+            font-weight: 700;
+        }
+
+        .badge.green { background: #c6f6d5; color: #276749; }
+        .badge.blue { background: #bee3f8; color: #2a4365; }
+        .badge.orange { background: #feebc8; color: #7b341e; }
+        .badge.gray { background: #e2e8f0; color: #4a5568; }
+
+        /* Progress bar */
+        .progress-row {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin: 8px 0;
+        }
+
+        .progress-label {
+            min-width: 200px;
+            font-size: 0.88rem;
+            font-weight: 500;
+        }
+
+        .progress-bar-bg {
+            flex: 1;
+            height: 10px;
+            background: #e2e8f0;
+            border-radius: 5px;
+            overflow: hidden;
+        }
+
+        .progress-bar-fill {
+            height: 100%;
+            border-radius: 5px;
+            transition: width 0.5s;
+        }
+
+        .progress-bar-fill.green { background: #38a169; }
+        .progress-bar-fill.blue { background: #3182ce; }
+        .progress-bar-fill.orange { background: #dd6b20; }
+        .progress-bar-fill.red { background: #e53e3e; }
+
+        .progress-value {
+            min-width: 50px;
+            text-align: right;
+            font-size: 0.88rem;
+            font-weight: 700;
+        }
+
+        /* Stats Grid */
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+            gap: 12px;
+            margin: 16px 0;
+        }
+
+        .stat-box {
+            background: white;
+            border: 1px solid #e2e8f0;
+            border-radius: 8px;
+            padding: 14px;
+            text-align: center;
+        }
+
+        .stat-box .val {
+            font-size: 1.4rem;
+            font-weight: 900;
+            color: #2b6cb0;
+        }
+
+        .stat-box .desc {
+            font-size: 0.75rem;
+            color: #718096;
+            margin-top: 2px;
+        }
+
+        /* Roadmap */
+        .roadmap-item {
+            display: flex;
+            gap: 16px;
+            margin-bottom: 20px;
+            align-items: flex-start;
+        }
+
+        .roadmap-num {
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            background: #2b6cb0;
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 900;
+            font-size: 1.1rem;
+            flex-shrink: 0;
+        }
+
+        .roadmap-content {
+            flex: 1;
+        }
+
+        .roadmap-content h4 {
+            font-size: 1rem;
+            font-weight: 700;
+            margin-bottom: 4px;
+        }
+
+        .roadmap-content p {
+            font-size: 0.88rem;
+            color: #4a5568;
+        }
+
+        /* Insight cards */
+        .insight-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+            margin-top: 16px;
+        }
+
+        .insight-card {
+            border-radius: 10px;
+            padding: 20px;
+        }
+
+        .insight-card.positive {
+            background: #f0fff4;
+            border: 1px solid #c6f6d5;
+        }
+
+        .insight-card.challenge {
+            background: #fffaf0;
+            border: 1px solid #feebc8;
+        }
+
+        .insight-card h4 {
+            font-size: 0.95rem;
+            font-weight: 700;
+            margin-bottom: 8px;
+        }
+
+        .insight-card.positive h4 { color: #276749; }
+        .insight-card.challenge h4 { color: #7b341e; }
+
+        .insight-card p {
+            font-size: 0.85rem;
+            color: #4a5568;
+            line-height: 1.7;
+        }
+
+        /* Footer */
+        .footer-section {
+            background: linear-gradient(135deg, #1a365d, #2b6cb0);
+            color: white;
+            border-radius: 16px;
+            padding: 40px;
+            margin: 24px auto 40px;
+            max-width: 960px;
+            text-align: center;
+        }
+
+        .footer-section h2 {
+            font-size: 1.4rem;
+            margin-bottom: 16px;
+            justify-content: center;
+        }
+
+        .footer-section p {
+            font-size: 0.95rem;
+            opacity: 0.9;
+            line-height: 1.8;
+            margin-bottom: 20px;
+        }
+
+        .outlook-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 14px;
+            text-align: left;
+            margin-top: 20px;
+        }
+
+        .outlook-item {
+            background: rgba(255,255,255,0.12);
+            border-radius: 10px;
+            padding: 14px 18px;
+            font-size: 0.88rem;
+        }
+
+        .outlook-item strong {
+            display: block;
+            margin-bottom: 4px;
+        }
+
+        @media (max-width: 768px) {
+            .kpi-cards { grid-template-columns: 1fr; }
+            .insight-grid { grid-template-columns: 1fr; }
+            .outlook-grid { grid-template-columns: 1fr; }
+            section { padding: 24px 20px; }
+            .exec-summary { padding: 24px 20px; }
+            .hero h1 { font-size: 1.6rem; }
+        }
+    
+    </style>
+</head>
+<body>
+
+<!-- Password Screen -->
+<div id="auth-screen">
+    <div class="auth-card">
+        <div class="lock-icon">ð</div>
+        <h2>ã¢ã¯ã»ã¹èªè¨¼</h2>
+        <p>ãã®ãã¼ã¸ã¯ä¿è­·ããã¦ãã¾ãããã¹ã¯ã¼ããå¥åãã¦ãã ããã</p>
+        <input type="password" id="password-input" class="auth-input" placeholder="ãã¹ã¯ã¼ããå¥å" onkeydown="if(event.key==='Enter')checkPassword()">
+        <button class="auth-btn" onclick="checkPassword()">â ã¢ã¯ã»ã¹</button>
+        <div id="auth-error" class="auth-error">ãã¹ã¯ã¼ããæ­£ããããã¾ããã</div>
+        <a href="../" class="back-link">â ã¢ã¼ã«ã¤ãã«æ»ã</a>
+    </div>
+</div>
+
+<!-- Report Content -->
+<div id="report-content">
+
+
+<!-- Hero -->
+<div class="hero">
+    <div class="company">ð¢ æ ªå¼ä¼ç¤¾CTI</div>
+    <h1>2026å¹´3æåº¦ æ´»åå ±åãµããªã¼</h1>
+    <div class="subtitle">çµå¶åºç¤ã®å¼·åã¨æ¡ç¨ã»ãã©ã³ãã£ã³ã°æ½ç­ã®æ¨é²</div>
+    <div class="date-badge">ð 2026å¹´3æ</div>
+</div>
+
+<!-- Executive Summary -->
+<div class="exec-summary container">
+    <h2>ð ã¨ã°ã¼ã¯ãã£ããµããªã¼</h2>
+    <p>
+        2026å¹´3æã¯<span class="bold">ãåºç¤æ´åã®æã</span>ã¨ãã¦ãHPãCPTãã¼ã ãã¼ã¸ã®æ´æ°å®äºãInstagramæç¨¿ã®å®å®éç¨ï¼ãã£ã¼ãã»ãªã¼ã«ã»ã¹ãã¼ãªã¼å1ä»¶ï¼ãã¨ã³è»¢è·åºåã§ã®æ¨ä¸ããåå®ç¢ºå®ã¨ãè¤æ°ã®æ½ç­ãçå®ã«é²ã¿ã¾ãããä¸æ¹ã§ãLLMOåæããµã³ã¯ã¡ã¿ã«ãã¼ã¸ã®æ§ææ¤è¨ãªã©æ°ããé åã¸ã®çæãå§ã¾ãã4æä»¥éã«åããå¸ç³ãæã£ã¦ãã¾ããã¨ã³è»¤è·ãã¤ã¬ã¯ãã§ã¯ã¹ã«ã¦ã50ä»¶/æãéä¿¡ãããã®ã®é¢è«å®æ½ã0ä»¶ã«çã¾ãããããæ¬¡æã®æ¹åãã¤ã³ãã§ãã
+    </p>
+</div>
+
+<!-- KPI Cards -->
+<div class="kpi-cards">
+    <div class="kpi-card green">
+        <div class="bar"></div>
+        <div class="icon">â</div>
+        <div class="number">100%</div>
+        <div class="label">HPæ´æ°å®äº</div>
+        <div class="sublabel">CTI HP + CPT HP</div>
+    </div>
+    <div class="kpi-card blue">
+        <div class="bar"></div>
+        <div class="icon">ð¸</div>
+        <div class="number">3ä»¶</div>
+        <div class="label">Instagramæç¨¿</div>
+        <div class="sublabel">ãã£ã¼ã+ãªã¼ã«+ã¹ãã¼ãªã¼</div>
+    </div>
+    <div class="kpi-card orange">
+        <div class="bar"></div>
+        <div class="icon">ð©</div>
+        <div class="number">50é</div>
+        <div class="label">ã¹ã«ã¦ãéä¿¡</div>
+        <div class="sublabel">ã¨ã³è»¢è·ãã¤ã¬ã¯ã</div>
+    </div>
+</div>
+
+<!-- ä¸»è¦æ´»åãã¤ã©ã¤ã -->
+<section>
+    <h2>â­ ä¸»è¦æ´»åãã¤ã©ã¤ãï¼3æï¼</h2>
+
+    <h3>ãªã¯ã«ã¼ãã£ã³ã°</h3>
+
+    <div class="activity-item success">
+        <div class="title">ã¨ã³è»¢è·åºå â æ¨ä¸ããåå®ç¢ºå® <span class="badge green">éæ 100%</span></div>
+        <div class="detail">2æã«åå®ãç²å¾ããæ¨ä¸ããã®å¥ç¤¾ãç¢ºå®ãé¢è«ã1ä»¶å®æ½ããæ¡ç¨ãã­ã»ã¹ãé èª¿ã«å®äºãã¾ããã</div>
+    </div>
+
+    <div class="activity-item warning">
+        <div class="title">ã¨ã³è»¢è·ãã¤ã¬ã¯ã â ã¹ã«ã¦ãç¶ç¶ <span class="badge orange">éæ 50%</span></div>
+        <div class="detail">ã¹ã«ã¦ãã¡ã¼ã«50ä»¶/æãéä¿¡ããã ãé¢è«ã®å®æ½ã¯0ä»¶ã§ãå¿åï½é¢è«ã®ã³ã³ãã¼ã¸ã§ã³ãèª²é¡ã§ãã</div>
+        <div class="stats-grid">
+            <div class="stat-box"><div class="val">50ä»¶</div><div class="desc">ã¹ã«ã¦ãéä¿¡/æ</div></div>
+            <div class="stat-box"><div class="val">0ä»¶</div><div class="desc">é¢è«å®æ½</div></div>
+        </div>
+    </div>
+
+    <div class="activity-item info">
+        <div class="title">æ¡ç¨æå ±HP â ä¿®æ­£å®äº <span class="badge green">éæ 100%</span></div>
+        <div class="detail">HPã®æ¡ç¨æå ±ãã¼ã¸ã®ä¿®æ­£ãå®äºãæ±è·èã«åããæå ±çºä¿¡åºç¤ãæ´ãã¾ããã</div>
+    </div>
+
+    <div class="activity-item paused">
+        <div class="title">æ°åæ¡ç¨ <span class="badge gray">é²è¡ä¸­</span></div>
+        <div class="detail">ãã­ã¼ã¯ã¼ã¯ãã¼ã¸ã®æ´»ç¨ã¨ç¤¾é·ä¸­å¿ã®å°åã¢ãã­ã¼ããç¶ç¶ä¸­ãå·ä½çãªé²æã¯æ¬¡æä»¥éã«æ¬æ ¼åã®è¦ã¿ã§ãã</div>
+    </div>
+
+    <h3>ãã©ã³ãã£ã³ã°ã»HP</h3>
+
+    <div class="activity-item success">
+        <div class="title">CTI HPãã©ãã·ã¥ã¢ãã <span class="badge green">éæ 100%</span></div>
+        <div class="detail">ç»åã®å·®ãæ¿ãä¾é ¼ãå«ããHPã®ä¿®æ­£ã¨ãã©ãã·ã¥ã¢ãããå®äºãã¾ããã</div>
+    </div>
+
+    <div class="activity-item success">
+        <div class="title">CPTãã¼ã ãã¼ã¸æ´æ° <span class="badge green">éæ 100%</span></div>
+        <div class="detail">åå®¹ã®ä¿®æ­£å®äºãç»åã®å·®ãæ¿ããå®äºãåçã®æ®ãç´ãã¨æ§æã®åæ§ç¯ãå®æ½ãã¾ããã</div>
+    </div>
+
+    <div class="activity-item info">
+        <div class="title">HPæ°è¦ãã¼ã¸ã®å¶ä½ <span class="badge blue">éæ 10%</span></div>
+        <div class="detail">ééããã¨ã®æã¡åãããå®æ½ããµã³ã¯ã¡ã¿ã«ãã¼ã¸ã®åæãè¡ããæ°è¦ãã¼ã¸ã®æ§ææ¤è¨ãéå§ãã¾ããã</div>
+    </div>
+
+    <div class="activity-item info">
+        <div class="title">ãµã¸ã§ã¹ãå¯¾ç­ <span class="badge orange">éæ 50%</span></div>
+        <div class="detail">ééããã¨ã®æã¡åãããå®æ½ããç¤¾å+ä½æã§ã®ãµã¸ã§ã¹ãè¡¨ç¤ºã®ç¢ºèªãç¶ç¶ãã¦ãã¾ãã</div>
+    </div>
+
+    <div class="activity-item info">
+        <div class="title">LLMOï¼AIOï¼å¯¾ç­ <span class="badge blue">éæ 10%</span></div>
+        <div class="detail">LLMOåæãå®æ½ããééããã¨ã®æã¡åããã§å¯¾ç­æ¹éãæ¤è¨ãã¤ã³ã¿ã¼ã­ãã¯ã«ããå¯¾ç­ã¨LLMOåæãéå§ãã¾ããã</div>
+    </div>
+
+    <div class="activity-item info">
+        <div class="title">GBPæ´»ç¨ <span class="badge orange">éæ 60%</span></div>
+        <div class="detail">MEOåæãå®æ½ããééããã¨ã®æã¡åãããè¡ãã¾ãããCONDORæ´»ç¨ã«ããå¹æçãªç®¡çãç¶ç¶ãã¦ãã¾ãã</div>
+    </div>
+
+    <h3>SNSéç¨</h3>
+
+    <div class="activity-item success">
+        <div class="title">Instagraméç¨ <span class="badge green">éæ 100%</span></div>
+        <div class="detail">ãã£ã¼ã1ä»¶ããªã¼ã«1ä»¶ãã¹ãã¼ãªã¼1ä»¶ãæç¨¿ãæ®å½±æ¸ã¿ã®ç»åãç·¨éãã¦æ´»ç¨ãã¾ããããã©ã­ã¯ã¼ã¯414åï¼ç®æ¨1,000åã®ç´41%ï¼ã</div>
+        <div class="stats-grid">
+            <div class="stat-box"><div class="val">414</div><div class="desc">ãã©ã­ã¯ã¼æ°</div></div>
+            <div class="stat-box"><div class="val">1ä»¶</div><div class="desc">ãã£ã¼ã</div></div>
+            <div class="stat-box"><div class="val">1ä»¶</div><div class="desc">ãªã¼ã«</div></div>
+            <div class="stat-box"><div class="val">1ä»¶</div><div class="desc">ã¹ãã¼ãªã¼</div></div>
+        </div>
+    </div>
+
+    <div class="activity-item success">
+        <div class="title">SNSããµã¤ãã®æ´»ç¨ <span class="badge green">éæ 100%</span></div>
+        <div class="detail">GBPã¨Instagramã®é£æºæ¸ã¿ãã¤ã³ã¹ã¿ã°ã©ã æã«1æç¨¿ä»¥ä¸ã®éç¨ãç¶ç¶ãã¦ãã¾ãã</div>
+    </div>
+
+    <div class="activity-item paused">
+        <div class="title">Xï¼æ§Twitterï¼é£æº <span class="badge gray">ä¸­æ­</span></div>
+        <div class="detail">Instagramé£æºã«ããã·ã§ã¢ã»ãã©ã­ã¯ã¼ç²å¾ã¯ä¸­æ­ä¸­ãéç¨æ¹éã®è¦ç´ããæ¤è¨ãã¦ãã¾ãã</div>
+    </div>
+
+    <h3>åç»ã»YouTube</h3>
+
+    <div class="activity-item warning">
+        <div class="title">YouTubeãã£ã³ãã«æ´»ç¨ <span class="badge orange">éæ 0%</span></div>
+        <div class="detail">äºå®30%ã«å¯¾ãã¦å®ç¸¾0%ããã£ã³ãã«æå ±ã®æ¡åãé²ãã§ããããæ¹éã®åæ¤è¨ãå¿è¦ã§ãã</div>
+    </div>
+
+    <h3>ç¦å©åçã»ç¤¾åã·ã¹ãã </h3>
+
+    <div class="activity-item info">
+        <div class="title">ç¦å©åç â ãªã¹ã­ãªã³ã°è£å©éç­ <span class="badge blue">äºå® 50%</span></div>
+        <div class="detail">æ¬¡æä¼ç»ã¨ãã¦ãªã¹ã­ãªã³ã°è£å©éã®æ´»ç¨ãæ¤è¨ä¸­ãæ°ããç¦å©åçæå ±ã®æºåãé²ãã¦ãã¾ãã</div>
+    </div>
+
+    <div class="activity-item info">
+        <div class="title">ç¤¾åã·ã¹ãã ã®æ¡å <span class="badge blue">éæ 40%</span></div>
+        <div class="detail">AIãã¼ã«ã®å©ç¨ãæ¤è¨ä¸­ãæ¥­åå¹çåã«åããæ°ããªå±éãæ¨¡ç´¢ãã¦ãã¾ãã</div>
+    </div>
+</section>
+
+<!-- KPIé²æç¶æ³ -->
+<section>
+    <h2>ð KPIé²æç¶æ³</h2>
+
+    <h3>ãªã¯ã«ã¼ãã£ã³ã°</h3>
+    <div class="progress-row">
+        <span class="progress-label">ã¨ã³è»¢è·åºåï¼æ¨ä¸ããåå®ï¼</span>
+        <div class="progress-bar-bg"><div class="progress-bar-fill green" style="width:100%"></div></div>
+        <span class="progress-value" style="color:#38a169">100%</span>
+    </div>
+    <div class="progress-row">
+        <span class="progress-label">æ¡ç¨æå ±HPä¿®æ­£</span>
+        <div class="progress-bar-bg"><div class="progress-bar-fill green" style="width:100%"></div></div>
+        <span class="progress-value" style="color:#38a169">100%</span>
+    </div>
+    <div class="progress-row">
+        <span class="progress-label">ã¨ã³è»¢è·ãã¤ã¬ã¯ã</span>
+        <div class="progress-bar-bg"><div class="progress-bar-fill orange" style="width:50%"></div></div>
+        <span class="progress-value" style="color:#dd6b20">50%</span>
+    </div>
+
+    <h3>ãã©ã³ãã£ã³ã°</h3>
+    <div class="progress-row">
+        <span class="progress-label">CTI HPãã©ãã·ã¥ã¢ãã</span>
+        <div class="progress-bar-bg"><div class="progress-bar-fill green" style="width:100%"></div></div>
+        <span class="progress-value" style="color:#38a169">100%</span>
+    </div>
+    <div class="progress-row">
+        <span class="progress-label">CPTãã¼ã ãã¼ã¸æ´æ°</span>
+        <div class="progress-bar-bg"><div class="progress-bar-fill green" style="width:100%"></div></div>
+        <span class="progress-value" style="color:#38a169">100%</span>
+    </div>
+    <div class="progress-row">
+        <span class="progress-label">GBPæ´»ç¨</span>
+        <div class="progress-bar-bg"><div class="progress-bar-fill orange" style="width:60%"></div></div>
+        <span class="progress-value" style="color:#dd6b20">60%</span>
+    </div>
+    <div class="progress-row">
+        <span class="progress-label">ãµã¸ã§ã¹ãå¯¾ç­</span>
+        <div class="progress-bar-bg"><div class="progress-bar-fill orange" style="width:50%"></div></div>
+        <span class="progress-value" style="color:#dd6b20">50%</span>
+    </div>
+    <div class="progress-row">
+        <span class="progress-label">LLMOï¼AIOï¼å¯¾ç­</span>
+        <div class="progress-bar-bg"><div class="progress-bar-fill red" style="width:10%"></div></div>
+        <span class="progress-value" style="color:#e53e3e">10%</span>
+    </div>
+    <div class="progress-row">
+        <span class="progress-label">HPæ°è¦ãã¼ã¸å¶ä½</span>
+        <div class="progress-bar-bg"><div class="progress-bar-fill red" style="width:10%"></div></div>
+        <span class="progress-value" style="color:#e53e3e">10%</span>
+    </div>
+    <div class="progress-row">
+        <span class="progress-label">YouTubeãã£ã³ãã«</span>
+        <div class="progress-bar-bg"><div class="progress-bar-fill red" style="width:0%"></div></div>
+        <span class="progress-value" style="color:#e53e3e">0%</span>
+    </div>
+
+    <h3>ãã¸ã¿ã«ãã¼ã±ãã£ã³ã°</h3>
+    <div class="progress-row">
+        <span class="progress-label">Instagramæç¨¿</span>
+        <div class="progress-bar-bg"><div class="progress-bar-fill green" style="width:100%"></div></div>
+        <span class="progress-value" style="color:#38a169">100%</span>
+    </div>
+    <div class="progress-row">
+        <span class="progress-label">Instagramãã©ã­ã¯ã¼ï¼414/1,000ï¼</span>
+        <div class="progress-bar-bg"><div class="progress-bar-fill blue" style="width:41%"></div></div>
+        <span class="progress-value" style="color:#3182ce">41%</span>
+    </div>
+    <div class="progress-row">
+        <span class="progress-label">SNSã»ãµã¤ãæ´»ç¨</span>
+        <div class="progress-bar-bg"><div class="progress-bar-fill green" style="width:100%"></div></div>
+        <span class="progress-value" style="color:#38a169">100%</span>
+    </div>
+
+    <h3>ç¦å©åçã»ç¤¾åã·ã¹ãã </h3>
+    <div class="progress-row">
+        <span class="progress-label">ç¦å©åçï¼ãªã¹ã­ãªã³ã°ç­ï¼</span>
+        <div class="progress-bar-bg"><div class="progress-bar-fill orange" style="width:50%"></div></div>
+        <span class="progress-value" style="color:#dd6b20">50%</span>
+    </div>
+    <div class="progress-row">
+        <span class="progress-label">ç¤¾åã·ã¹ãã æ¡å</span>
+        <div class="progress-bar-bg"><div class="progress-bar-fill orange" style="width:40%"></div></div>
+        <span class="progress-value" style="color:#dd6b20">40%</span>
+    </div>
+</section>
+
+<!-- æ¦ç¥çã¤ã³ãµã¤ã -->
+<section>
+    <h2>ð¡ æ¦ç¥çã¤ã³ãµã¤ã</h2>
+    <div class="insight-grid">
+        <div class="insight-card positive">
+            <h4>â æåè¦å </h4>
+            <p><strong>HPã»CPTãã¼ã¸ã®åææ´æ°å®äº</strong><br>CTI HPã»CPTãã¼ã ãã¼ã¸åæ¹ã®ä¿®æ­£ã¨ç»åå·®ãæ¿ããåæåã«å®äºããããã¨ã§ãä¼æ¥­ã®ãªã³ã©ã¤ã³ãã¬ã¼ã³ã¹ãå¤§å¹ã«åä¸ãã¾ããã</p>
+        </div>
+        <div class="insight-card positive">
+            <h4>â æåè¦å </h4>
+            <p><strong>Instagramæç¨¿ã®å®å®éç¨</strong><br>ãã£ã¼ãã»ãªã¼ã«ã»ã¹ãã¼ãªã¼ã®3ç¨®é¡ãæ¯ææç¨¿ããä½å¶ãå®çããã©ã­ã¯ã¼ã414åã¾ã§çå®ã«å¢å ãã¦ãã¾ãã</p>
+        </div>
+        <div class="insight-card positive">
+            <h4>â æåè¦å </h4>
+            <p><strong>æ°é åã¸ã®çæ</strong><br>LLMOåæããµã³ã¯ã¡ã¿ã«ãã¼ã¸æ§ææ¤è¨ãAIãã¼ã«å©ç¨æ¤è¨ãªã©ãæ¬¡ã®ãã§ã¼ãºã«åããèª¿æ»ã»åæãè¤æ°éå§ã§ãã¾ããã</p>
+        </div>
+        <div class="insight-card challenge">
+            <h4>â ï¸ èª²é¡ã¨å¯¾ç­</h4>
+            <p><strong>ã¨ã³è»¤è·ãã¤ã¬ã¯ãã®é¢è«ã¼ã­</strong><br>ã¹ã«ã¦ã50ä»¶éä¿¡ã«å¯¾ãé¢è«ã0ä»¶ãã¡ãã»ã¼ã¸åå®¹ã®è¦ç´ããå¯¾è±¡æ¡ä»¶ã®åèª¿æ´ãè¿ä¿¡ãã©ã­ã¼ã®å¼·åãå¿è¦ã§ãã</p>
+        </div>
+        <div class="insight-card challenge">
+            <h4>â ï¸ èª²é¡ã¨å¯¾ç­</h4>
+            <p><strong>YouTubeãã£ã³ãã«ã®åæ»</strong><br>äºå®30%ã«å¯¾ãã¦å®ç¸¾0%ãåç»ã³ã³ãã³ãæ¦ç¥ã®æ¹éæ±ºå®ã¨åªååº¦ã®åè¨­å®ãæ¥ããã¾ãã</p>
+        </div>
+        <div class="insight-card challenge">
+            <h4>â ï¸ èª²é¡ã¨å¯¾ç­</h4>
+            <p><strong>Xï¼Twitterï¼éç¨ã®ä¸­æ­ç¶ç¶</strong><br>Instagramé£æºã«ããã·ã§ã¢ãåæ­¢ä¸­ãXéç¨ã®åéå¤æ­ãããã¯æ­£å¼ãªä¸­æ­¢å¤æ­ãè¡ãããªã½ã¼ã¹éåãæç¢ºã«ããå¿è¦ãããã¾ãã</p>
+        </div>
+    </div>
+</section>
+
+<!-- 4æã®æ¦ç¥ã­ã¼ãããã -->
+<section>
+    <h2>ðºï¸ 4æã®æ¦ç¥ã­ã¼ãããã</h2>
+
+    <div class="roadmap-item">
+        <div class="roadmap-num">1</div>
+        <div class="roadmap-content">
+            <h4>ã¨ã³è»¢è·ãã¤ã¬ã¯ãã®æ¹å â é¢è«å®æ½ã®å®ç¾</h4>
+            <p>ã¹ã«ã¦ãéä¿¡æ°ã80ä»¶ä»¥ä¸/æã«å¼ãä¸ãï¼4æäºå®100%ï¼ãã¡ãã»ã¼ã¸åå®¹ã®æ¹åã¨é¢è«ç²å¾ã«æ³¨åãé¢è«4ä»¶ä»¥ä¸ã®å®æ½ãç®æãã¾ãã</p>
+        </div>
+    </div>
+
+    <div class="roadmap-item">
+        <div class="roadmap-num">2</div>
+        <div class="roadmap-content">
+            <h4>HPæ°è¦ãã¼ã¸ã®æ§æç¢ºå®ã»å¶ä½çæ</h4>
+            <p>ãµã³ã¯ã¡ã¿ã«ãã¼ã¸ã®åæçµæãè¸ã¾ããæ°è¦ãã¼ã¸ã®è¿½å ã¨æ§æã®ç¸è«ãé²ãã¾ãï¼4æäºå®20%ï¼ã</p>
+        </div>
+    </div>
+
+    <div class="roadmap-item">
+        <div class="roadmap-num">3</div>
+        <div class="roadmap-content">
+            <h4>Instagram 420ãã©ã­ã¯ã¼ä»¥ä¸ã¸</h4>
+            <p>ãã£ã¼ãã»ãªã¼ã«ã»ã¹ãã¼ãªã¼ã®3ç¨®æç¨¿ãç¶ç¶ãç»åã»åç»ã®æ®å½±ãå®æ½ããã³ã³ãã³ãã®è³ªã¨éãç¶­æãã¾ãã</p>
+        </div>
+    </div>
+
+    <div class="roadmap-item">
+        <div class="roadmap-num">4</div>
+        <div class="roadmap-content">
+            <h4>LLMOå¯¾ç­ã»ãµã¸ã§ã¹ãå¯¾ç­ã®æ¨é²</h4>
+            <p>LLMOåæã®çµæãåæ ããå·ä½çãªå¯¾ç­ãå®è¡ããµã¸ã§ã¹ãç¢ºèªã¨MEOåæãç¶ç¶ãã¾ãã</p>
+        </div>
+    </div>
+
+    <div class="roadmap-item">
+        <div class="roadmap-num">5</div>
+        <div class="roadmap-content">
+            <h4>AIãã¼ã«å°å¥ã¨ç¤¾åã·ã¹ãã å¼·å</h4>
+            <p>AIãã¼ã«ã®å©ç¨æ¤è¨ãé²ããæ¥­åå¹çåã®ããã®å·ä½çãªå°å¥è¨ç»ãç­å®ãã¾ãã</p>
+        </div>
+    </div>
+</section>
+
+<!-- Next Stage -->
+<div class="footer-section">
+    <h2>ð æ¬¡ãªãã¹ãã¼ã¸ã¸</h2>
+    <p>
+        2026å¹´3æãCTIã¯HPã»CPTãã¼ã¸ã®æ´æ°å®äºã¨Instagramæç¨¿ã®å®å®éç¨ã«ãããä¼æ¥­ã®ãªã³ã©ã¤ã³ãã¬ã¼ã³ã¹ãå¼·åãã¾ãããLLMOåæãAIãã¼ã«æ¤è¨ãªã©ãæ¬¡ã®ãã§ã¼ãºã«åããå¸ç³ãçå®ã«æã¦ã¦ãã¾ãã4æä»¥éã¯ãã¨ã³è»¢è·ãã¤ã¬ã¯ãã§ã®é¢è«å®ç¾ãHPæ°è¦ãã¼ã¸ã®å¶ä½æ¨é²ãããã¦ãã¸ã¿ã«ãã¼ã±ãã£ã³ã°æ½ç­ã®æ·±åã«æ³¨åãã¾ãã
+    </p>
+    <div class="outlook-grid">
+        <div class="outlook-item">
+            <strong>ð© ã¨ã³è»¢è·ãã¤ã¬ã¯ãã®é¢è«å®ç¾</strong>
+            ã¹ã«ã¦ã80ä»¶ä»¥ä¸/æã¸å¼ãä¸ããé¢è«4ä»¶ã®å®æ½ãç®æã
+        </div>
+        <div class="outlook-item">
+            <strong>ð HPæ°è¦ãã¼ã¸ã®å¶ä½æ¨é²</strong>
+            ãµã³ã¯ã¡ã¿ã«ãã¼ã¸ã®è¿½å ã¨æ°è¦ãã¼ã¸ã®æ§æç¢ºå®
+        </div>
+        <div class="outlook-item">
+            <strong>ð¸ Instagramæé·ã®ç¶ç¶</strong>
+            420ãã©ã­ã¯ã¼éæã3ç¨®æç¨¿ä½å¶ã®ç¶­æ
+        </div>
+        <div class="outlook-item">
+            <strong>ð¤ LLMOå¯¾ç­ã»AIãã¼ã«å°å¥</strong>
+            åæçµæã«åºã¥ãå¯¾ç­å®è¡ã¨æ¥­åå¹çåãã¼ã«ã®é¸å®
+        </div>
+    </div>
+</div>
+
+
+</div>
+
+<script>
+const HASH = "4280758a8634cf9323401f8f62d0887b672ea545bd965496c4f9b24c94b54d2e";
+
+async function sha256(str) {
+    const buf = await crypto.subtle.digest("SHA-256", new TextEncoder().encode(str));
+    return Array.from(new Uint8Array(buf)).map(b => b.toString(16).padStart(2, "0")).join("");
+}
+
+async function checkPassword() {
+    const input = document.getElementById("password-input").value;
+    const hash = await sha256(input);
+    if (hash === HASH) {
+        document.getElementById("auth-screen").style.display = "none";
+        document.getElementById("report-content").style.display = "block";
+        sessionStorage.setItem("cti_auth_2026_03", "1");
+    } else {
+        document.getElementById("auth-error").style.display = "block";
+        document.getElementById("password-input").value = "";
+        document.getElementById("password-input").focus();
+    }
+}
+
+// Auto-unlock if already authenticated in this session
+if (sessionStorage.getItem("cti_auth_2026_03") === "1") {
+    document.getElentById("auth-screen").style.display = "none";
+    document.getElementById("report-content").style.display = "block";
+}
+</script>
+
+</body>
+</html>
