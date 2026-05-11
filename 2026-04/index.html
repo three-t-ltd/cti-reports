@@ -1,0 +1,649 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>株式会社CTI 2026年4月度 活動報告サマリー</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@300;400;500;700;900&display=swap');
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: 'Noto Sans JP', sans-serif; background: #f0f4f8; color: #2d3748; line-height: 1.8; }
+
+        /* Password Screen */
+        #auth-screen {
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: linear-gradient(135deg, #1a365d 0%, #2b6cb0 50%, #3182ce 100%);
+        }
+        .auth-card {
+            background: white;
+            border-radius: 20px;
+            padding: 48px 40px;
+            text-align: center;
+            box-shadow: 0 8px 40px rgba(0,0,0,0.2);
+            max-width: 420px;
+            width: 90%;
+        }
+        .lock-icon {
+            width: 64px; height: 64px;
+            background: #2b6cb0;
+            border-radius: 50%;
+            display: flex; align-items: center; justify-content: center;
+            margin: 0 auto 20px;
+            font-size: 1.8rem;
+        }
+        .auth-card h2 {
+            font-size: 1.4rem; font-weight: 700; color: #1a365d; margin-bottom: 8px;
+        }
+        .auth-card p {
+            font-size: 0.9rem; color: #718096; margin-bottom: 24px;
+        }
+        .auth-input {
+            width: 100%; padding: 14px 18px;
+            border: 2px solid #e2e8f0; border-radius: 10px;
+            font-size: 1rem; font-family: 'Noto Sans JP', sans-serif;
+            outline: none; transition: border-color 0.2s;
+        }
+        .auth-input:focus { border-color: #3182ce; }
+        .auth-btn {
+            width: 100%; padding: 14px;
+            background: #1a365d; color: white;
+            border: none; border-radius: 10px;
+            font-size: 1rem; font-weight: 700;
+            font-family: 'Noto Sans JP', sans-serif;
+            cursor: pointer; margin-top: 16px;
+            transition: background 0.2s;
+        }
+        .auth-btn:hover { background: #2b6cb0; }
+        .auth-error {
+            color: #e53e3e; font-size: 0.85rem;
+            margin-top: 12px; display: none;
+        }
+        .back-link {
+            display: inline-block; margin-top: 20px;
+            color: #a0aec0; font-size: 0.85rem; text-decoration: none;
+        }
+        .back-link:hover { color: #718096; }
+
+        /* Report Content (hidden by default) */
+        #report-content { display: none; }
+
+        .hero {
+            background: linear-gradient(135deg, #1a365d 0%, #2b6cb0 50%, #3182ce 100%);
+            color: white;
+            text-align: center;
+            padding: 60px 20px 50px;
+        }
+        .hero .company {
+            font-size: 1.5rem; font-weight: 700; margin-bottom: 8px;
+            display: flex; align-items: center; justify-content: center; gap: 10px;
+        }
+        .hero h1 {
+            font-size: 2.2rem; font-weight: 900; margin-bottom: 6px;
+            text-shadow: 0 2px 8px rgba(0,0,0,0.2);
+        }
+        .hero .subtitle { font-size: 0.95rem; opacity: 0.85; }
+        .hero .date-badge {
+            display: inline-block; background: rgba(255,255,255,0.15);
+            padding: 4px 18px; border-radius: 20px; font-size: 0.9rem; margin-top: 12px;
+        }
+
+        .container { max-width: 960px; margin: 0 auto; padding: 0 20px; }
+
+        .exec-summary {
+            background: white; border-radius: 16px; padding: 40px;
+            margin: -30px auto 30px; max-width: 960px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+            position: relative; z-index: 1;
+        }
+        .exec-summary h2 {
+            font-size: 1.5rem; font-weight: 700; margin-bottom: 16px;
+            display: flex; align-items: center; gap: 10px;
+        }
+        .exec-summary p { font-size: 1rem; color: #4a5568; line-height: 1.9; }
+        .exec-summary .bold { font-weight: 700; color: #1a365d; }
+
+        .kpi-cards {
+            display: grid; grid-template-columns: repeat(3, 1fr);
+            gap: 20px; margin: 30px auto; max-width: 960px; padding: 0 20px;
+        }
+        .kpi-card {
+            background: white; border-radius: 12px; padding: 24px;
+            text-align: center; box-shadow: 0 2px 12px rgba(0,0,0,0.06);
+        }
+        .kpi-card .bar {
+            height: 8px; border-radius: 4px; margin-bottom: 12px;
+            position: relative; overflow: hidden;
+        }
+        .kpi-card .bar::before {
+            content: ''; position: absolute; top: 0; left: 0;
+            height: 100%; border-radius: 4px;
+        }
+        .kpi-card.green .bar { background: #c6f6d5; }
+        .kpi-card.green .bar::before { background: #38a169; width: 100%; }
+        .kpi-card.green .icon { color: #38a169; }
+        .kpi-card.blue .bar { background: #bee3f8; }
+        .kpi-card.blue .bar::before { background: #3182ce; width: 100%; }
+        .kpi-card.blue .icon { color: #3182ce; }
+        .kpi-card.orange .bar { background: #feebc8; }
+        .kpi-card.orange .bar::before { background: #dd6b20; width: 100%; }
+        .kpi-card.orange .icon { color: #dd6b20; }
+        .kpi-card .icon { font-size: 1.2rem; margin-bottom: 4px; }
+        .kpi-card .number { font-size: 2.5rem; font-weight: 900; line-height: 1.2; }
+        .kpi-card .label { font-size: 0.85rem; font-weight: 700; color: #4a5568; }
+        .kpi-card .sublabel { font-size: 0.8rem; color: #a0aec0; }
+
+        section {
+            background: white; border-radius: 16px; padding: 36px 40px;
+            margin: 24px auto; max-width: 960px; box-shadow: 0 2px 12px rgba(0,0,0,0.06);
+        }
+        section h2 {
+            font-size: 1.4rem; font-weight: 700; margin-bottom: 24px;
+            display: flex; align-items: center; gap: 10px; color: #1a365d;
+        }
+        section h3 {
+            font-size: 1.1rem; font-weight: 700; margin: 20px 0 12px; color: #2b6cb0;
+        }
+
+        .activity-item {
+            background: #f7fafc; border-radius: 10px; padding: 20px 24px;
+            margin-bottom: 16px; border-left: 4px solid #3182ce;
+        }
+        .activity-item.success { border-left-color: #38a169; }
+        .activity-item.warning { border-left-color: #dd6b20; }
+        .activity-item.info { border-left-color: #3182ce; }
+        .activity-item.paused { border-left-color: #a0aec0; }
+        .activity-item .title {
+            font-size: 1rem; font-weight: 700; margin-bottom: 6px;
+            display: flex; align-items: center; gap: 8px;
+        }
+        .activity-item .detail { font-size: 0.9rem; color: #4a5568; margin-bottom: 6px; }
+
+        .badge {
+            display: inline-block; padding: 2px 10px; border-radius: 12px;
+            font-size: 0.75rem; font-weight: 700;
+        }
+        .badge.green { background: #c6f6d5; color: #276749; }
+        .badge.blue { background: #bee3f8; color: #2a4365; }
+        .badge.orange { background: #feebc8; color: #7b341e; }
+        .badge.gray { background: #e2e8f0; color: #4a5568; }
+
+        .progress-row {
+            display: flex; align-items: center; gap: 12px; margin: 8px 0;
+        }
+        .progress-label { min-width: 200px; font-size: 0.88rem; font-weight: 500; }
+        .progress-bar-bg {
+            flex: 1; height: 10px; background: #e2e8f0;
+            border-radius: 5px; overflow: hidden;
+        }
+        .progress-bar-fill { height: 100%; border-radius: 5px; transition: width 0.5s; }
+        .progress-bar-fill.green { background: #38a169; }
+        .progress-bar-fill.blue { background: #3182ce; }
+        .progress-bar-fill.orange { background: #dd6b20; }
+        .progress-bar-fill.red { background: #e53e3e; }
+        .progress-value { min-width: 50px; text-align: right; font-size: 0.88rem; font-weight: 700; }
+
+        .stats-grid {
+            display: grid; grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+            gap: 12px; margin: 16px 0;
+        }
+        .stat-box {
+            background: white; border: 1px solid #e2e8f0; border-radius: 8px;
+            padding: 14px; text-align: center;
+        }
+        .stat-box .val { font-size: 1.4rem; font-weight: 900; color: #2b6cb0; }
+        .stat-box .desc { font-size: 0.75rem; color: #718096; margin-top: 2px; }
+
+        .roadmap-item {
+            display: flex; gap: 16px; margin-bottom: 20px; align-items: flex-start;
+        }
+        .roadmap-num {
+            width: 36px; height: 36px; border-radius: 50%;
+            background: #2b6cb0; color: white;
+            display: flex; align-items: center; justify-content: center;
+            font-weight: 900; font-size: 1.1rem; flex-shrink: 0;
+        }
+        .roadmap-content { flex: 1; }
+        .roadmap-content h4 { font-size: 1rem; font-weight: 700; margin-bottom: 4px; }
+        .roadmap-content p { font-size: 0.88rem; color: #4a5568; }
+
+        .insight-grid {
+            display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin-top: 16px;
+        }
+        .insight-card { border-radius: 10px; padding: 20px; }
+        .insight-card.positive { background: #f0fff4; border: 1px solid #c6f6d5; }
+        .insight-card.challenge { background: #fffaf0; border: 1px solid #feebc8; }
+        .insight-card h4 { font-size: 0.95rem; font-weight: 700; margin-bottom: 8px; }
+        .insight-card.positive h4 { color: #276749; }
+        .insight-card.challenge h4 { color: #7b341e; }
+        .insight-card p { font-size: 0.85rem; color: #4a5568; line-height: 1.7; }
+
+        .footer-section {
+            background: linear-gradient(135deg, #1a365d, #2b6cb0);
+            color: white; border-radius: 16px; padding: 40px;
+            margin: 24px auto 40px; max-width: 960px; text-align: center;
+        }
+        .footer-section h2 { font-size: 1.4rem; margin-bottom: 16px; justify-content: center; }
+        .footer-section p { font-size: 0.95rem; opacity: 0.9; line-height: 1.8; margin-bottom: 20px; }
+
+        .outlook-grid {
+            display: grid; grid-template-columns: 1fr 1fr; gap: 14px;
+            text-align: left; margin-top: 20px;
+        }
+        .outlook-item {
+            background: rgba(255,255,255,0.12); border-radius: 10px;
+            padding: 14px 18px; font-size: 0.88rem;
+        }
+        .outlook-item strong { display: block; margin-bottom: 4px; }
+
+        @media (max-width: 768px) {
+            .kpi-cards { grid-template-columns: 1fr; }
+            .insight-grid { grid-template-columns: 1fr; }
+            .outlook-grid { grid-template-columns: 1fr; }
+            section { padding: 24px 20px; }
+            .exec-summary { padding: 24px 20px; }
+            .hero h1 { font-size: 1.6rem; }
+        }
+    </style>
+</head>
+<body>
+
+<!-- Password Screen -->
+<div id="auth-screen">
+    <div class="auth-card">
+        <div class="lock-icon">🔒</div>
+        <h2>アクセス認証</h2>
+        <p>このページは保護されています。パスワードを入力してください。</p>
+        <input type="password" id="password-input" class="auth-input" placeholder="パスワードを入力" onkeydown="if(event.key==='Enter')checkPassword()">
+        <button class="auth-btn" onclick="checkPassword()">→ アクセス</button>
+        <div id="auth-error" class="auth-error">パスワードが正しくありません。</div>
+        <a href="../" class="back-link">← アーカイブに戻る</a>
+    </div>
+</div>
+
+<!-- Report Content -->
+<div id="report-content">
+
+<!-- Hero -->
+<div class="hero">
+    <div class="company">🏢 株式会社CTI</div>
+    <h1>2026年4月度 活動報告サマリー</h1>
+    <div class="subtitle">採用成果の獲得とLIB事業ブランディング戦略の確立</div>
+    <div class="date-badge">📅 2026年4月</div>
+</div>
+
+<!-- Executive Summary -->
+<div class="exec-summary container">
+    <h2>📈 エグゼクティブサマリー</h2>
+    <p>
+        2026年4月は<span class="bold">「次のステージへの布石を打った月」</span>として、エン転職ダイレクトから機械設計職の<span class="bold">渡邊さんの内定獲得（7月21日入社決定）</span>、リチウムイオン電池試作機事業の<span class="bold">SEO/LLM対策ページ戦略の確立</span>、そして<span class="bold">MEO 6拠点分のレポート完了</span>と、複数の重要施策が実を結びました。一方で、営業職での面談は不採用が続き、求める人物像とのマッチング精度が次月以降の課題となります。LIBページの公開準備、再スカウト戦略の本格運用、コーポレートサイトのリニューアル打ち合わせなど、5月以降に向けた仕込みも整っています。
+    </p>
+</div>
+
+<!-- KPI Cards -->
+<div class="kpi-cards">
+    <div class="kpi-card green">
+        <div class="bar"></div>
+        <div class="icon">🎯</div>
+        <div class="number">1名</div>
+        <div class="label">内定獲得</div>
+        <div class="sublabel">渡邊さん（機械設計／7月入社）</div>
+    </div>
+    <div class="kpi-card blue">
+        <div class="bar"></div>
+        <div class="icon">⚡</div>
+        <div class="number">完了</div>
+        <div class="label">LIBページ戦略策定</div>
+        <div class="sublabel">構成案・モックアップ完成</div>
+    </div>
+    <div class="kpi-card orange">
+        <div class="bar"></div>
+        <div class="icon">📍</div>
+        <div class="number">6拠点</div>
+        <div class="label">MEOレポート完了</div>
+        <div class="sublabel">本社+工場+営業所</div>
+    </div>
+</div>
+
+<!-- 主要活動ハイライト -->
+<section>
+    <h2>⭐ 主要活動ハイライト（4月）</h2>
+
+    <h3>リクルーティング</h3>
+
+    <div class="activity-item success">
+        <div class="title">エン転職ダイレクト ― 渡邊さん内定獲得 <span class="badge green">達成 100%</span></div>
+        <div class="detail">4月6日応募の渡邊さん（34歳・大阪府／機械設計職）が内定→承諾。書類返送済みで7月21日入社決定。経験・人柄・住まいすべて◎の理想的な人材を獲得しました。</div>
+    </div>
+
+    <div class="activity-item success">
+        <div class="title">エン転職ダイレクト ― スカウト121件・面談5件・機械設計1名採用 <span class="badge green">達成 100%</span></div>
+        <div class="detail">4月にスカウト121件を送信、面談を5件実施。機械設計職で渡邊さん1名の採用が確定（7月21日入社決定）。再スカウト戦略の効果が顕在化しました。</div>
+        <div class="stats-grid">
+            <div class="stat-box"><div class="val">121件</div><div class="desc">スカウト送信</div></div>
+            <div class="stat-box"><div class="val">5件</div><div class="desc">面談実施</div></div>
+            <div class="stat-box"><div class="val">1名</div><div class="desc">採用（機械設計）</div></div>
+            <div class="stat-box"><div class="val">80.0%</div><div class="desc">開封率</div></div>
+        </div>
+    </div>
+
+    <div class="activity-item success">
+        <div class="title">エン転職広告 ― 終了・採用1名 <span class="badge green">達成 100%</span></div>
+        <div class="detail">エン転職広告のキャンペーンが終了。木下さんの採用1名（5月1日入社）で予定通り完了しました。次回以降は「やりがい」「社会貢献」を訴求軸に切り替え検討。</div>
+    </div>
+
+    <div class="activity-item warning">
+        <div class="title">営業職の面談 ― 不採用が続く課題</div>
+        <div class="detail">利川さん・竹川さん・山田さんの3名と面談実施するも全員不採用（営業は人柄重視）。松井さんは辞退。求める人物像とのマッチング精度向上が次月以降の課題。</div>
+    </div>
+
+    <div class="activity-item info">
+        <div class="title">新卒採用 <span class="badge gray">進行中</span></div>
+        <div class="detail">ハローワークページの活用と社長中心の地元アプローチを継続中。具体的な進捗は今後本格化の見込み。</div>
+    </div>
+
+    <h3>ブランディング・HP</h3>
+
+    <div class="activity-item success">
+        <div class="title">LIB（リチウムイオン電池）事業ブランディング戦略 ― 確立 <span class="badge green">達成 100%</span></div>
+        <div class="detail">4/28までに「戦略メモ」「ページ構成案」「モックアップHTML」「セキュア版HTML」を完成。サンクメタル比較における3つの差別化軸（熱風・乾燥技術／ラボ→量産スケール対応／設計〜据付ワンストップ）を明確化。6月のロールコーター実機掲載に向け公開準備完了。</div>
+    </div>
+
+    <div class="activity-item success">
+        <div class="title">MEO分析 ― 全6拠点レポート完了 <span class="badge green">達成 100%</span></div>
+        <div class="detail">本社・第一工場・第二工場・第三工場・六甲アイランド梱包工場・和歌山営業所の6拠点それぞれのMEOレポートを取得。GBP活用の状況を全拠点で可視化し、次月以降の改善施策に活用可能な基盤が整いました。</div>
+    </div>
+
+    <div class="activity-item info">
+        <div class="title">HP新規ページ制作 ― サンクメタル分析・モックアップ作成 <span class="badge blue">達成 20%</span></div>
+        <div class="detail">サンクメタルページの分析、新規ページ（LIB試作機コラム）のモックアップ作成を完了。構成の相談は5月実施予定。HP会社打ち合わせで本実装着手。</div>
+    </div>
+
+    <div class="activity-item info">
+        <div class="title">サジェスト対策 ― MEOにより上位表示 <span class="badge orange">達成 60%</span></div>
+        <div class="detail">MEOによる上位表示が反映されているかを確認継続。各拠点ごとの露出状況をMEOレポートと併せて把握。</div>
+    </div>
+
+    <div class="activity-item info">
+        <div class="title">LLMO（AIO）対策 ― LLMO分析 <span class="badge blue">達成 20%</span></div>
+        <div class="detail">インターロックによる対策とLLMO分析を継続。LIBページの戦略策定により、LLM/AI検索での引用獲得に向けた具体的な打ち手が明確化しました。</div>
+    </div>
+
+    <h3>SNS運用</h3>
+
+    <div class="activity-item success">
+        <div class="title">Instagram運用 ― ストーリー・リール動画の活用 <span class="badge green">達成 100%</span></div>
+        <div class="detail">フィード1件、リール1件、ストーリー1件を投稿。3種投稿体制を継続しています。</div>
+    </div>
+
+    <div class="activity-item info">
+        <div class="title">投稿用画像撮影 <span class="badge blue">達成 50%</span></div>
+        <div class="detail">これまでに撮影した動画素材を活用し、編集により投稿に対応。新規撮影は次月以降に予定。</div>
+    </div>
+
+    <div class="activity-item info">
+        <div class="title">1,000フォロワーの獲得（中間目標420名） <span class="badge blue">達成 20%</span></div>
+        <div class="detail">416フォロワー（4月時点）。3月の414名から微増。中間目標420名にあと一歩、安定的な増加を継続中。</div>
+    </div>
+
+    <div class="activity-item success">
+        <div class="title">SNSやサイトの活用 <span class="badge green">達成 100%</span></div>
+        <div class="detail">GBPとインスタグラムの連携を継続。インスタグラム月1投稿以上の運用を維持しています。</div>
+    </div>
+
+    <div class="activity-item paused">
+        <div class="title">X（旧Twitter）連携 <span class="badge gray">中断継続</span></div>
+        <div class="detail">Instagram連携によるシェア・フォロワー獲得は引き続き中断中。運用方針の再検討が必要です。</div>
+    </div>
+
+    <h3>動画・YouTube</h3>
+
+    <div class="activity-item warning">
+        <div class="title">YouTubeチャンネル活用 <span class="badge orange">達成 0%</span></div>
+        <div class="detail">引き続き予定に対する実績が伴わない状態。LIBページとの連動など、新たな切り口での再起動を検討する必要があります。</div>
+    </div>
+
+    <h3>福利厚生・社内システム</h3>
+
+    <div class="activity-item paused">
+        <div class="title">福利厚生 ― 5月以降に開始 <span class="badge gray">予定</span></div>
+        <div class="detail">4月は活動なし。5月以降、リゾートワークスのご紹介を新しい福利厚生として展開予定。</div>
+    </div>
+
+    <div class="activity-item info">
+        <div class="title">社内システムの拡充 ― AIツール利用検討 <span class="badge blue">達成 40%</span></div>
+        <div class="detail">業務効率化に向けたAIツールの利用検討を継続。具体的な導入計画策定フェーズに入ります。</div>
+    </div>
+
+    <h3>CPTの活動</h3>
+
+    <div class="activity-item success">
+        <div class="title">CPTホームページ更新 ― 設備一覧修正 <span class="badge green">達成 100%</span></div>
+        <div class="detail">CPTホームページの内容修正・設備一覧の修正を完了。引き続き構成の再構築を進めています。</div>
+    </div>
+</section>
+
+<!-- KPI進捗状況 -->
+<section>
+    <h2>📊 KPI進捗状況</h2>
+
+    <h3>リクルーティング</h3>
+    <div class="progress-row">
+        <span class="progress-label">エン転職ダイレクト（121件・5件面談）</span>
+        <div class="progress-bar-bg"><div class="progress-bar-fill green" style="width:100%"></div></div>
+        <span class="progress-value" style="color:#38a169">100%</span>
+    </div>
+    <div class="progress-row">
+        <span class="progress-label">エン転職広告（終了・採用1名）</span>
+        <div class="progress-bar-bg"><div class="progress-bar-fill green" style="width:100%"></div></div>
+        <span class="progress-value" style="color:#38a169">100%</span>
+    </div>
+    <div class="progress-row">
+        <span class="progress-label">採用情報HP活用</span>
+        <div class="progress-bar-bg"><div class="progress-bar-fill green" style="width:100%"></div></div>
+        <span class="progress-value" style="color:#38a169">100%</span>
+    </div>
+
+    <h3>インナーブランディング</h3>
+    <div class="progress-row">
+        <span class="progress-label">CTI HP修正・ブラッシュアップ</span>
+        <div class="progress-bar-bg"><div class="progress-bar-fill green" style="width:100%"></div></div>
+        <span class="progress-value" style="color:#38a169">100%</span>
+    </div>
+    <div class="progress-row">
+        <span class="progress-label">GBPの活用（MEO分析）</span>
+        <div class="progress-bar-bg"><div class="progress-bar-fill orange" style="width:50%"></div></div>
+        <span class="progress-value" style="color:#dd6b20">50%</span>
+    </div>
+    <div class="progress-row">
+        <span class="progress-label">SNS・サイト活用</span>
+        <div class="progress-bar-bg"><div class="progress-bar-fill green" style="width:100%"></div></div>
+        <span class="progress-value" style="color:#38a169">100%</span>
+    </div>
+    <div class="progress-row">
+        <span class="progress-label">Instagram投稿（ストーリー・リール）</span>
+        <div class="progress-bar-bg"><div class="progress-bar-fill green" style="width:100%"></div></div>
+        <span class="progress-value" style="color:#38a169">100%</span>
+    </div>
+    <div class="progress-row">
+        <span class="progress-label">Instagram投稿用画像撮影</span>
+        <div class="progress-bar-bg"><div class="progress-bar-fill blue" style="width:50%"></div></div>
+        <span class="progress-value" style="color:#3182ce">50%</span>
+    </div>
+    <div class="progress-row">
+        <span class="progress-label">Instagram フォロワー獲得（416/420）</span>
+        <div class="progress-bar-bg"><div class="progress-bar-fill blue" style="width:20%"></div></div>
+        <span class="progress-value" style="color:#3182ce">20%</span>
+    </div>
+
+    <h3>ブランディング</h3>
+    <div class="progress-row">
+        <span class="progress-label">サジェスト対策</span>
+        <div class="progress-bar-bg"><div class="progress-bar-fill orange" style="width:60%"></div></div>
+        <span class="progress-value" style="color:#dd6b20">60%</span>
+    </div>
+    <div class="progress-row">
+        <span class="progress-label">LLMO（AIO）対策</span>
+        <div class="progress-bar-bg"><div class="progress-bar-fill blue" style="width:20%"></div></div>
+        <span class="progress-value" style="color:#3182ce">20%</span>
+    </div>
+    <div class="progress-row">
+        <span class="progress-label">HP新規ページ制作</span>
+        <div class="progress-bar-bg"><div class="progress-bar-fill blue" style="width:20%"></div></div>
+        <span class="progress-value" style="color:#3182ce">20%</span>
+    </div>
+    <div class="progress-row">
+        <span class="progress-label">YouTubeチャンネル</span>
+        <div class="progress-bar-bg"><div class="progress-bar-fill red" style="width:0%"></div></div>
+        <span class="progress-value" style="color:#e53e3e">0%</span>
+    </div>
+
+    <h3>社内システム拡充・CPT</h3>
+    <div class="progress-row">
+        <span class="progress-label">社内システム拡充（AIツール）</span>
+        <div class="progress-bar-bg"><div class="progress-bar-fill orange" style="width:40%"></div></div>
+        <span class="progress-value" style="color:#dd6b20">40%</span>
+    </div>
+    <div class="progress-row">
+        <span class="progress-label">CPT HP更新（設備一覧）</span>
+        <div class="progress-bar-bg"><div class="progress-bar-fill green" style="width:100%"></div></div>
+        <span class="progress-value" style="color:#38a169">100%</span>
+    </div>
+</section>
+
+<!-- 戦略的インサイト -->
+<section>
+    <h2>💡 戦略的インサイト</h2>
+    <div class="insight-grid">
+        <div class="insight-card positive">
+            <h4>✅ 成功要因</h4>
+            <p><strong>機械設計職での内定獲得（渡邊さん）</strong><br>応募から内定承諾・入社決定（7月21日）までスムーズに完了。経験・人柄・住まいすべて◎で、求める人物像と高くマッチしました。エン転職ダイレクトでの理想的な採用事例です。</p>
+        </div>
+        <div class="insight-card positive">
+            <h4>✅ 成功要因</h4>
+            <p><strong>LIB事業ブランディング戦略の体系化</strong><br>サンクメタル分析・差別化軸の明確化・コラムページ構成・モックアップまで一気通貫で4/28に完成。6月のロールコーター実機掲載に向けた基盤が整いました。LLMO対策としても先進的な取り組みです。</p>
+        </div>
+        <div class="insight-card positive">
+            <h4>✅ 成功要因</h4>
+            <p><strong>MEO全6拠点の可視化</strong><br>本社・3工場・梱包工場・営業所のMEOレポート完了により、各拠点の現状把握とGBP改善施策の検討基盤が整いました。</p>
+        </div>
+        <div class="insight-card challenge">
+            <h4>⚠️ 課題と対策</h4>
+            <p><strong>営業職での面談→不採用が続く</strong><br>3名と面談を実施するも全員不採用、1名は辞退。「営業は人柄重視」の方針と候補者属性のマッチングに改善余地。求人票への「やりがい」追記など、訴求軸の見直しが必要です。</p>
+        </div>
+        <div class="insight-card challenge">
+            <h4>⚠️ 課題と対策</h4>
+            <p><strong>スカウト対象者の枯渇</strong><br>新規対象者が減少し、再スカウト依存の状態。今後は「書類選考免除なしの一括送信」への戦略転換も視野に入れ、応募母集団の拡大策を検討する必要があります。</p>
+        </div>
+        <div class="insight-card challenge">
+            <h4>⚠️ 課題と対策</h4>
+            <p><strong>YouTubeチャンネル運用の停滞</strong><br>引き続き実績0%。LIBページとの連動（実機動画など）や、社員研修旅行動画の一部公開など、新たな打ち手で再起動を図る必要があります。</p>
+        </div>
+    </div>
+</section>
+
+<!-- 5月の戦略ロードマップ -->
+<section>
+    <h2>🗺️ 5月以降の戦略ロードマップ</h2>
+
+    <div class="roadmap-item">
+        <div class="roadmap-num">1</div>
+        <div class="roadmap-content">
+            <h4>コーポレートサイトリニューアル ― HP会社との打ち合わせ着手</h4>
+            <p>来週予定のHP会社との打ち合わせを起点に、コーポレートサイト全体の改修ロードマップを策定。LIBページ実装も並行して進めます。</p>
+        </div>
+    </div>
+
+    <div class="roadmap-item">
+        <div class="roadmap-num">2</div>
+        <div class="roadmap-content">
+            <h4>LIBコラムページの公開準備</h4>
+            <p>4月に完成した構成案・モックアップを基に、本実装フェーズへ移行。6月のロールコーター実機掲載タイミングに合わせて公開を目指します。</p>
+        </div>
+    </div>
+
+    <div class="roadmap-item">
+        <div class="roadmap-num">3</div>
+        <div class="roadmap-content">
+            <h4>エン転職ダイレクト ― 再スカウト効果の最大化</h4>
+            <p>再スカウト2〜6回目までの効果最大化（最大2.84倍の応募率）を狙い、件名・本文のバリエーション運用を本格化。残り729通の有効活用を進めます。</p>
+        </div>
+    </div>
+
+    <div class="roadmap-item">
+        <div class="roadmap-num">4</div>
+        <div class="roadmap-content">
+            <h4>営業職採用の訴求軸見直し</h4>
+            <p>求人票に「やりがい」を追記し、社会貢献や仕事の意義を伝える訴求軸へ転換。マッチング精度の向上を図ります。</p>
+        </div>
+    </div>
+
+    <div class="roadmap-item">
+        <div class="roadmap-num">5</div>
+        <div class="roadmap-content">
+            <h4>MEO施策の実行フェーズへ</h4>
+            <p>4月のレポートで把握した各拠点の課題に対し、具体的な改善施策（GBP情報拡充・写真追加・口コミ対応など）の実行に着手します。</p>
+        </div>
+    </div>
+</section>
+
+<!-- Next Stage -->
+<div class="footer-section">
+    <h2>🚀 次なるステージへ</h2>
+    <p>
+        2026年4月、CTIは渡邊さんの内定獲得とLIB事業ブランディング戦略の確立により、採用とマーケティングの両軸で大きな前進を実現しました。MEO 6拠点レポートの完成も、地域密着型ブランディングの基盤として大きな意味を持ちます。5月以降は、コーポレートサイトリニューアルの本格始動、LIBコラムページの公開準備、再スカウト戦略の深化、そして営業職採用の訴求軸転換に注力します。
+    </p>
+    <div class="outlook-grid">
+        <div class="outlook-item">
+            <strong>🌐 HP会社打ち合わせ＆リニューアル始動</strong>
+            コーポレートサイト全体の改修ロードマップ策定
+        </div>
+        <div class="outlook-item">
+            <strong>⚡ LIBコラムページ公開準備</strong>
+            6月のロールコーター実機掲載に合わせて公開
+        </div>
+        <div class="outlook-item">
+            <strong>📩 再スカウト効果の最大化</strong>
+            最大2.84倍の応募率を狙う多回数戦略本格化
+        </div>
+        <div class="outlook-item">
+            <strong>📍 MEO実行フェーズ</strong>
+            6拠点のGBP情報拡充・写真追加・口コミ対応
+        </div>
+    </div>
+</div>
+
+</div>
+
+<script>
+const HASH = "bb7c40664110a61729f231821bc036443a6d0063598036735e76cdf5da24fc83";
+
+async function sha256(str) {
+    const buf = await crypto.subtle.digest("SHA-256", new TextEncoder().encode(str));
+    return Array.from(new Uint8Array(buf)).map(b => b.toString(16).padStart(2, "0")).join("");
+}
+
+async function checkPassword() {
+    const input = document.getElementById("password-input").value;
+    const hash = await sha256(input);
+    if (hash === HASH) {
+        document.getElementById("auth-screen").style.display = "none";
+        document.getElementById("report-content").style.display = "block";
+        sessionStorage.setItem("cti_auth_2026_04", "1");
+    } else {
+        document.getElementById("auth-error").style.display = "block";
+        document.getElementById("password-input").value = "";
+        document.getElementById("password-input").focus();
+    }
+}
+
+// Auto-unlock if already authenticated in this session
+if (sessionStorage.getItem("cti_auth_2026_04") === "1") {
+    document.getElementById("auth-screen").style.display = "none";
+    document.getElementById("report-content").style.display = "block";
+}
+</script>
+</body>
+</html>
