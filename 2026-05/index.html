@@ -1,0 +1,339 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>株式会社CTI 2026年5月度 活動報告サマリー</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500;700;900&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --navy:#1a365d; --blue:#2b6cb0; --blue2:#3182ce; --sky:#ebf4ff;
+    --ink:#1a202c; --gray:#4a5568; --line:#e2e8f0; --bg:#f7fafc;
+    --green:#2f855a; --green-bg:#f0fff4; --orange:#c05621; --orange-bg:#fffaf0;
+  }
+  *{box-sizing:border-box;margin:0;padding:0;}
+  body{font-family:'Noto Sans JP',sans-serif;color:var(--ink);background:var(--bg);line-height:1.8;-webkit-font-smoothing:antialiased;}
+
+  /* ===== 認証画面 ===== */
+  #auth-screen{position:fixed;inset:0;z-index:1000;display:flex;align-items:center;justify-content:center;
+    background:linear-gradient(135deg,var(--navy),var(--blue) 60%,var(--blue2));padding:20px;}
+  .auth-card{background:#fff;border-radius:18px;box-shadow:0 20px 60px rgba(0,0,0,.25);padding:48px 36px;max-width:380px;width:100%;text-align:center;}
+  .auth-lock{width:64px;height:64px;border-radius:50%;background:var(--sky);display:flex;align-items:center;justify-content:center;margin:0 auto 20px;font-size:30px;}
+  .auth-card h2{font-size:1.25rem;color:var(--navy);margin-bottom:8px;}
+  .auth-card p{font-size:.9rem;color:var(--gray);margin-bottom:24px;}
+  #password-input{width:100%;padding:14px 16px;font-size:1rem;border:2px solid var(--line);border-radius:10px;margin-bottom:14px;font-family:inherit;}
+  #password-input:focus{outline:none;border-color:var(--blue2);}
+  .auth-btn{width:100%;padding:14px;font-size:1rem;font-weight:700;color:#fff;background:linear-gradient(135deg,var(--blue),var(--blue2));border:none;border-radius:10px;cursor:pointer;transition:opacity .2s;font-family:inherit;}
+  .auth-btn:hover{opacity:.9;}
+  #auth-error{display:none;color:#c53030;font-size:.85rem;margin-top:12px;}
+
+  /* ===== レポート本体 ===== */
+  #report-content{display:none;}
+  .wrap{max-width:960px;margin:0 auto;padding:0 20px;}
+
+  .hero{background:linear-gradient(135deg,var(--navy),var(--blue) 55%,var(--blue2));color:#fff;padding:56px 0 48px;}
+  .hero .wrap{text-align:center;}
+  .hero .company{font-size:.95rem;letter-spacing:.18em;opacity:.85;margin-bottom:10px;}
+  .hero h1{font-size:2rem;font-weight:900;line-height:1.4;margin-bottom:12px;}
+  .hero .sub{font-size:1rem;opacity:.9;}
+
+  section{padding:40px 0;}
+  section.alt{background:#fff;}
+  h2.title{font-size:1.4rem;color:var(--navy);margin-bottom:22px;padding-bottom:10px;border-bottom:3px solid var(--blue2);display:inline-block;}
+
+  .summary-card{background:#fff;border-left:5px solid var(--blue2);border-radius:12px;box-shadow:0 4px 16px rgba(26,54,93,.08);padding:24px 26px;color:var(--gray);font-size:1.02rem;}
+
+  .kpi-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:18px;}
+  .kpi-card{background:linear-gradient(135deg,#fff,var(--sky));border:1px solid var(--line);border-radius:16px;box-shadow:0 6px 20px rgba(26,54,93,.08);padding:26px 20px;text-align:center;}
+  .kpi-card .label{font-size:.85rem;color:var(--gray);margin-bottom:10px;}
+  .kpi-card .num{font-size:2rem;font-weight:900;color:var(--blue);line-height:1.2;}
+  .kpi-card .unit{font-size:.95rem;font-weight:700;color:var(--blue);}
+  .kpi-card .note{font-size:.78rem;color:var(--gray);margin-top:8px;}
+
+  .cat-block{background:#fff;border-radius:14px;box-shadow:0 4px 16px rgba(26,54,93,.07);padding:22px 24px;margin-bottom:18px;}
+  .cat-block h3{font-size:1.08rem;color:var(--navy);margin-bottom:14px;display:flex;align-items:center;gap:8px;}
+  .cat-block ul{list-style:none;}
+  .cat-block li{padding:9px 0;border-bottom:1px dashed var(--line);font-size:.95rem;color:var(--gray);}
+  .cat-block li:last-child{border-bottom:none;}
+  .cat-block li b{color:var(--ink);}
+  .badge{display:inline-block;font-size:.72rem;font-weight:700;padding:2px 9px;border-radius:20px;margin-left:6px;vertical-align:middle;}
+  .b-done{background:var(--green-bg);color:var(--green);}
+  .b-prog{background:var(--sky);color:var(--blue);}
+  .b-hold{background:#fef2f2;color:#c53030;}
+
+  .prog-row{margin-bottom:16px;}
+  .prog-row .pr-head{display:flex;justify-content:space-between;font-size:.92rem;margin-bottom:6px;}
+  .prog-row .pr-head .pct{font-weight:700;color:var(--blue);}
+  .bar{height:12px;background:var(--line);border-radius:8px;overflow:hidden;}
+  .bar > span{display:block;height:100%;background:linear-gradient(90deg,var(--blue),var(--blue2));border-radius:8px;}
+  .prog-group{background:#fff;border-radius:14px;box-shadow:0 4px 16px rgba(26,54,93,.07);padding:22px 24px;margin-bottom:18px;}
+  .prog-group h3{font-size:1.05rem;color:var(--navy);margin-bottom:16px;}
+
+  .insight-grid{display:grid;grid-template-columns:1fr 1fr;gap:18px;}
+  .insight{border-radius:14px;padding:22px 24px;}
+  .insight.success{background:var(--green-bg);border:1px solid #c6f6d5;}
+  .insight.issue{background:var(--orange-bg);border:1px solid #feebc8;}
+  .insight h3{font-size:1.05rem;margin-bottom:12px;}
+  .insight.success h3{color:var(--green);}
+  .insight.issue h3{color:var(--orange);}
+  .insight ul{list-style:none;}
+  .insight li{padding:7px 0 7px 20px;position:relative;font-size:.92rem;color:var(--gray);}
+  .insight li:before{content:"";position:absolute;left:0;top:14px;width:8px;height:8px;border-radius:50%;}
+  .insight.success li:before{background:var(--green);}
+  .insight.issue li:before{background:var(--orange);}
+
+  .road-step{display:flex;gap:16px;background:#fff;border-radius:12px;box-shadow:0 3px 12px rgba(26,54,93,.06);padding:18px 22px;margin-bottom:14px;}
+  .road-step .no{flex:0 0 38px;height:38px;border-radius:50%;background:linear-gradient(135deg,var(--blue),var(--blue2));color:#fff;font-weight:900;display:flex;align-items:center;justify-content:center;}
+  .road-step .txt{font-size:.96rem;color:var(--gray);padding-top:6px;}
+  .road-step .txt b{color:var(--ink);}
+
+  .footer{background:linear-gradient(135deg,var(--navy),var(--blue2));color:#fff;padding:40px 0;}
+  .footer h2{font-size:1.3rem;font-weight:900;margin-bottom:20px;text-align:center;}
+  .focus-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin-bottom:24px;}
+  .focus-item{background:rgba(255,255,255,.12);border-radius:12px;padding:18px 14px;text-align:center;font-size:.9rem;font-weight:500;}
+  .focus-item .ic{font-size:1.6rem;display:block;margin-bottom:8px;}
+  .footer .meta{text-align:center;font-size:.85rem;opacity:.85;border-top:1px solid rgba(255,255,255,.25);padding-top:18px;}
+
+  .note-box{background:#fff;border:1px dashed var(--line);border-radius:10px;padding:14px 18px;font-size:.82rem;color:var(--gray);margin-top:18px;}
+
+  @media(max-width:680px){
+    .hero h1{font-size:1.5rem;}
+    .kpi-grid,.insight-grid,.focus-grid{grid-template-columns:1fr;}
+  }
+</style>
+</head>
+<body>
+
+<!-- ===== 認証画面 ===== -->
+<div id="auth-screen">
+  <div class="auth-card">
+    <div class="auth-lock">🔒</div>
+    <h2>株式会社CTI 活動報告</h2>
+    <p>2026年5月度サマリー<br>パスワードを入力してください</p>
+    <input type="password" id="password-input" placeholder="パスワード" autocomplete="off"
+           onkeydown="if(event.key==='Enter')checkPassword()">
+    <button class="auth-btn" onclick="checkPassword()">アクセス</button>
+    <div id="auth-error">パスワードが正しくありません</div>
+  </div>
+</div>
+
+<!-- ===== レポート本体 ===== -->
+<div id="report-content">
+
+  <div class="hero">
+    <div class="wrap">
+      <div class="company">株式会社CTI ＜No.3代行・伴走支援＞</div>
+      <h1>2026年5月度 活動報告サマリー</h1>
+      <div class="sub">リクルーティング／ブランディング／社内システム拡充</div>
+    </div>
+  </div>
+
+  <!-- エグゼクティブサマリー -->
+  <section>
+    <div class="wrap">
+      <h2 class="title">📈 エグゼクティブサマリー</h2>
+      <div class="summary-card">
+        5月は採用とブランディングの両面で前進した1か月でした。エン転職では渡邊さんの内定・入社（7月21日）が確定し、田中さんが最終面接（6月18日）へ進みました。再アプローチ施策が機能し、累計で9名の応募を獲得しています。ブランディング面ではサジェスト対策が完了（達成100%）し、HPのブラッシュアップ、新規ページの仮追加、noteの構想づくりにも着手しました。一方で、エン転職のスカウト配信数は計画にやや届かず（56件／予定80件）、社内システムの内容変更は未着手（0%）のまま残っています。この2点を6月以降の重点課題として進めます。
+      </div>
+    </div>
+  </section>
+
+  <!-- KPIカード -->
+  <section class="alt">
+    <div class="wrap">
+      <h2 class="title">📊 主要指標（5月）</h2>
+      <div class="kpi-grid">
+        <div class="kpi-card">
+          <div class="label">スカウト経由の内定</div>
+          <div class="num">1<span class="unit">名 確定</span></div>
+          <div class="note">渡邊さん／7月21日入社決定</div>
+        </div>
+        <div class="kpi-card">
+          <div class="label">Instagram フォロワー</div>
+          <div class="num">416<span class="unit">人</span></div>
+          <div class="note">当面目標420人に肉薄</div>
+        </div>
+        <div class="kpi-card">
+          <div class="label">再アプローチ経由の応募</div>
+          <div class="num">9<span class="unit">名</span></div>
+          <div class="note">1回目反応率84.9%／2回目72.6%</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 主要活動ハイライト -->
+  <section>
+    <div class="wrap">
+      <h2 class="title">⭐ 主要活動ハイライト（5月）</h2>
+
+      <div class="cat-block">
+        <h3>🎯 リクルーティング</h3>
+        <ul>
+          <li><b>エン転職ダイレクト</b>：スカウト56件送信、面談3件を実施。田中さんが最終面接へ進行。<span class="badge b-prog">進行中 80%</span></li>
+          <li><b>選考状況</b>：渡邊さんが内定承諾、7月21日入社で決定。田中さん最終面接は6月18日、佐々木さん一次面接は6月11日予定。</li>
+          <li><b>再アプローチ施策</b>：1回目338件（反応84.9%）、2回目289件（反応72.6%）を実施し、累計9名の応募を獲得。</li>
+          <li><b>エン転職広告</b>：メッセージ対応・面談を完了。<span class="badge b-done">完了</span></li>
+          <li><b>採用募集の周知</b>：HP採用ページの修正を完了。<span class="badge b-done">完了</span></li>
+        </ul>
+      </div>
+
+      <div class="cat-block">
+        <h3>🏷️ ブランディング・HP</h3>
+        <ul>
+          <li><b>サジェスト対策</b>：社名＋住所のサジェスト、MEO上位表示の確認を完了。<span class="badge b-done">完了 100%</span></li>
+          <li><b>HPの修正・ブラッシュアップ</b>：CTI HPのブラッシュアップ、新規ページの仮追加、noteの構想作成を実施。<span class="badge b-done">100%</span></li>
+          <li><b>GBP（Googleビジネスプロフィール）の活用</b>：MEO分析を継続。4月50%→5月70%へ前進。<span class="badge b-prog">進行中 70%</span></li>
+          <li><b>LLMO（AIO）対策</b>：インターロックによる対策とLLMO分析を継続。<span class="badge b-prog">進行中 20%</span></li>
+          <li><b>HP新規ページ制作</b>：構成の相談、新規ページの追加、公開スケジュール立てに着手。<span class="badge b-prog">進行中 20%</span></li>
+        </ul>
+      </div>
+
+      <div class="cat-block">
+        <h3>📱 SNS運用・動画</h3>
+        <ul>
+          <li><b>投稿用画像の確保</b>：過去画像からの引用で投稿素材を確保。<span class="badge b-done">100%</span></li>
+          <li><b>ストーリー・リール動画</b>：フィード1件・リール1件・ストーリー1件を投稿。<span class="badge b-done">100%</span></li>
+          <li><b>SNS・サイトの活用</b>：Instagramで月1投稿以上を継続。GBPとInstagramは連携済み。<span class="badge b-done">100%</span></li>
+          <li><b>YouTubeチャンネル</b>：今後の展開を要検討（5月は未着手）。<span class="badge b-hold">要検討 0%</span></li>
+        </ul>
+      </div>
+
+      <div class="cat-block">
+        <h3>🛠️ 福利厚生・社内システム</h3>
+        <ul>
+          <li><b>新しい福利厚生情報</b>：リゾートワークスの紹介を実施。<span class="badge b-done">100%</span></li>
+          <li><b>課題抽出と検討</b>：AIツールの利用を検討。<span class="badge b-prog">進行中 50%</span></li>
+          <li><b>社内システムの内容変更</b>：写真撮り直し・構成再構築は5月は未着手。<span class="badge b-hold">未達 0%</span></li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <!-- KPI進捗状況 -->
+  <section class="alt">
+    <div class="wrap">
+      <h2 class="title">📊 KPI進捗状況</h2>
+
+      <div class="prog-group">
+        <h3>リクルーティング</h3>
+        <div class="prog-row"><div class="pr-head"><span>エン転職ダイレクト（スカウト・面談）</span><span class="pct">80%</span></div><div class="bar"><span style="width:80%"></span></div></div>
+        <div class="prog-row"><div class="pr-head"><span>エン転職広告</span><span class="pct">100%</span></div><div class="bar"><span style="width:100%"></span></div></div>
+        <div class="prog-row"><div class="pr-head"><span>採用募集の周知（HP）</span><span class="pct">100%</span></div><div class="bar"><span style="width:100%"></span></div></div>
+      </div>
+
+      <div class="prog-group">
+        <h3>インナーブランディング</h3>
+        <div class="prog-row"><div class="pr-head"><span>投稿用画像の確保</span><span class="pct">100%</span></div><div class="bar"><span style="width:100%"></span></div></div>
+        <div class="prog-row"><div class="pr-head"><span>ストーリー・リール動画の活用</span><span class="pct">100%</span></div><div class="bar"><span style="width:100%"></span></div></div>
+        <div class="prog-row"><div class="pr-head"><span>HPの修正・ブラッシュアップ</span><span class="pct">100%</span></div><div class="bar"><span style="width:100%"></span></div></div>
+        <div class="prog-row"><div class="pr-head"><span>SNS・サイトの活用</span><span class="pct">100%</span></div><div class="bar"><span style="width:100%"></span></div></div>
+        <div class="prog-row"><div class="pr-head"><span>GBPの活用（MEO）</span><span class="pct">70%</span></div><div class="bar"><span style="width:70%"></span></div></div>
+        <div class="prog-row"><div class="pr-head"><span>1,000フォロワーの獲得（当面目標420人）</span><span class="pct">20%</span></div><div class="bar"><span style="width:20%"></span></div></div>
+      </div>
+
+      <div class="prog-group">
+        <h3>ブランディング</h3>
+        <div class="prog-row"><div class="pr-head"><span>サジェスト対策の展開</span><span class="pct">100%</span></div><div class="bar"><span style="width:100%"></span></div></div>
+        <div class="prog-row"><div class="pr-head"><span>LLMO（AIO）対策</span><span class="pct">20%</span></div><div class="bar"><span style="width:20%"></span></div></div>
+        <div class="prog-row"><div class="pr-head"><span>HP新規ページの制作</span><span class="pct">20%</span></div><div class="bar"><span style="width:20%"></span></div></div>
+        <div class="prog-row"><div class="pr-head"><span>YouTubeチャンネルの活用</span><span class="pct">0%</span></div><div class="bar"><span style="width:0%"></span></div></div>
+      </div>
+
+      <div class="prog-group">
+        <h3>社内システムの拡充</h3>
+        <div class="prog-row"><div class="pr-head"><span>課題抽出と検討（AIツール）</span><span class="pct">50%</span></div><div class="bar"><span style="width:50%"></span></div></div>
+        <div class="prog-row"><div class="pr-head"><span>内容の変更（写真・構成）</span><span class="pct">0%</span></div><div class="bar"><span style="width:0%"></span></div></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 戦略的インサイト -->
+  <section>
+    <div class="wrap">
+      <h2 class="title">💡 戦略的インサイト</h2>
+      <div class="insight-grid">
+        <div class="insight success">
+          <h3>✅ 成功要因</h3>
+          <ul>
+            <li>再アプローチ施策が機能（1回目84.9%、2回目72.6%の高い反応率）し、累計9名の応募に直結した。</li>
+            <li>渡邊さんの入社が確定し、田中さんも最終面接へ。母集団から具体的な成果が出始めた。</li>
+            <li>サジェスト対策が完了（4月60%→5月100%）し、ブランディングの基盤が一段進んだ。</li>
+            <li>HPブラッシュアップ・新規ページ仮追加・note構想と、情報発信の土台づくりが進行した。</li>
+          </ul>
+        </div>
+        <div class="insight issue">
+          <h3>⚠️ 課題と対策</h3>
+          <ul>
+            <li>スカウト配信数が計画未達（56件／予定80件、評価△）。6月は再スカウト＋新規優先で配信数を回復する。</li>
+            <li>応募率が課題。求人票に「やりがい」「入社後の流れ」を追記し、魅力付けを強化する。</li>
+            <li>社内システムの内容変更が未着手（0%）。写真撮り直し・構成再構築を6月に再始動する。</li>
+            <li>LLMO・HP新規ページが20%で停滞。公開スケジュールに沿って制作を加速する。</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 6月以降ロードマップ -->
+  <section class="alt">
+    <div class="wrap">
+      <h2 class="title">🗺️ 6月以降の戦略ロードマップ</h2>
+      <div class="road-step"><div class="no">1</div><div class="txt"><b>スカウト配信数の回復</b>：営業職は新規優先＋再スカウト併用。再スカウトは6回目まで効果が確認されているため、件名を変えながら継続する。</div></div>
+      <div class="road-step"><div class="no">2</div><div class="txt"><b>選考のフォロー</b>：田中さん最終面接（6/18）、佐々木さん一次面接（6/11）を支援。渡邊さんの入社（7/21）に向けたサポートを行う。</div></div>
+      <div class="road-step"><div class="no">3</div><div class="txt"><b>ブランディング制作の加速</b>：HP新規ページとLLMO対策の制作を進め、公開スケジュールを確定する。</div></div>
+      <div class="road-step"><div class="no">4</div><div class="txt"><b>社内システムの内容変更を再始動</b>：写真の撮り直しと構成の再構築に着手する。</div></div>
+      <div class="road-step"><div class="no">5</div><div class="txt"><b>求人票の改善</b>：各求人に「やりがい」「入社後の流れ」を追記し、応募率の改善につなげる。</div></div>
+    </div>
+  </section>
+
+  <!-- フッター -->
+  <div class="footer">
+    <div class="wrap">
+      <h2>🚀 6月の重点項目</h2>
+      <div class="focus-grid">
+        <div class="focus-item"><span class="ic">📨</span>スカウト配信数の回復</div>
+        <div class="focus-item"><span class="ic">🤝</span>内定者の入社サポート</div>
+        <div class="focus-item"><span class="ic">🌐</span>HP新規ページ・LLMO加速</div>
+        <div class="focus-item"><span class="ic">🛠️</span>社内システム内容変更の再始動</div>
+      </div>
+      <div class="meta">
+        株式会社CTI 月次活動報告／作成：three.T合同会社<br>
+        次回定例MTG：2026年7月6日（月）15:00〜
+      </div>
+      <div class="note-box">
+        ※ 本レポートの活動進捗・達成度は活動報告スプレッドシート（2026年5月実績）に基づきます。エン転職の効果数値（スカウト送信可能数672通／累計送信398通、再アプローチ反応率、選考状況など）は2026年6月8日の定例MTG資料（〜6月5日時点）に基づき、一部5月末以降の動きを含みます。
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<script>
+  const HASH = "a032a63c17380269fbedf7c73f218c0cf6a3d08a66881a2bd0d3455e3b6130f6";
+  async function sha256(str){
+    const buf = await crypto.subtle.digest("SHA-256", new TextEncoder().encode(str));
+    return Array.from(new Uint8Array(buf)).map(b=>b.toString(16).padStart(2,"0")).join("");
+  }
+  async function checkPassword(){
+    const input = document.getElementById("password-input").value;
+    const hash = await sha256(input);
+    if(hash === HASH){
+      document.getElementById("auth-screen").style.display = "none";
+      document.getElementById("report-content").style.display = "block";
+      sessionStorage.setItem("cti_auth_2026_05","1");
+    } else {
+      document.getElementById("auth-error").style.display = "block";
+      document.getElementById("password-input").value = "";
+      document.getElementById("password-input").focus();
+    }
+  }
+  if(sessionStorage.getItem("cti_auth_2026_05")==="1"){
+    document.getElementById("auth-screen").style.display = "none";
+    document.getElementById("report-content").style.display = "block";
+  }
+</script>
+</body>
+</html>
