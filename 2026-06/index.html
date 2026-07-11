@@ -110,6 +110,22 @@
 
   .note-box{background:#fff;border:1px dashed var(--line);border-radius:10px;padding:14px 18px;font-size:.82rem;color:var(--gray);margin-top:18px;}
 
+  /* ===== 活動報告書 全項目テーブル ===== */
+  table.act{width:100%;border-collapse:collapse;font-size:.84rem;min-width:820px;}
+  table.act th,table.act td{padding:9px 10px;border-bottom:1px solid var(--line);vertical-align:top;text-align:left;color:var(--gray);}
+  table.act thead th{background:var(--navy);color:#fff;font-weight:700;font-size:.78rem;text-align:center;}
+  table.act td.c{text-align:center;white-space:nowrap;}
+  table.act td.kgi{font-weight:700;color:var(--navy);background:var(--sky);white-space:nowrap;}
+  table.act td.n{font-weight:700;color:var(--ink);}
+  table.act tbody tr:hover td{background:#fbfdff;}
+  .st{display:inline-block;font-size:.72rem;font-weight:700;padding:2px 9px;border-radius:20px;white-space:nowrap;}
+  .st-prog{background:var(--sky);color:var(--blue);}
+  .st-done{background:var(--green-bg);color:var(--green);}
+  .st-stop{background:#fef2f2;color:#c53030;}
+  .st-check{background:var(--orange-bg);color:var(--orange);}
+  .stat-line{display:flex;flex-wrap:wrap;gap:10px;margin-bottom:14px;}
+  .stat-line span{font-size:.85rem;font-weight:700;padding:6px 14px;border-radius:20px;background:#fff;border:1px solid var(--line);color:var(--gray);}
+
   @media(max-width:680px){
     .hero h1{font-size:1.5rem;}
     .kpi-grid,.insight-grid,.focus-grid{grid-template-columns:1fr;}
@@ -138,7 +154,7 @@
     <div class="wrap">
       <div class="company">株式会社CTI ＜No.3代行・伴走支援＞</div>
       <h1>2026年6月度 活動報告サマリー</h1>
-      <div class="sub">リクルーティング／MEO・Googleビジネスプロフィール／ブランディング</div>
+      <div class="sub">リクルーティング／MEO・GBP／ブランディング／SNS・福利厚生・社内システム</div>
     </div>
   </div>
 
@@ -147,7 +163,8 @@
     <div class="wrap">
       <h2 class="title">📈 エグゼクティブサマリー</h2>
       <div class="summary-card">
-        6月は採用の取り組みが具体的な成果に結実した1か月でした。渡邊さん（機械設計）に続き、田中さん（購買）が最終面接（6月18日）を通過して内定を承諾。<b>2名の入社が7月21日に確定</b>しました。いずれもスカウトが決め手となり、母集団形成の積み重ねが採用へと直結しています。再アプローチ施策も引き続き機能し、累計で11名の応募を獲得（5月時点9名から+2名）。一方でスカウト配信数は依然として課題（評価△）で、6月は営業職で新規優先＋再スカウトを併用し、7月からは再スカウトのスパンを1か月に短縮して配信を強化します。MEO（Googleビジネスプロフィール）は6拠点を運用中で、6月は季節要因により多くの拠点で閲覧が前月比で微減となったものの、第二工場では反応数が前月比+146%と伸長しました。六甲アイランド梱包工場は未計測のため、プロフィール整備を今後の課題として進めます。
+        6月は採用の取り組みが具体的な成果に結実した1か月でした。渡邊さん（機械設計）に続き、田中さん（購買）が最終面接（6月18日）を通過して内定を承諾。<b>2名の入社が7月21日に確定</b>しました。いずれもスカウトが決め手となり、母集団形成の積み重ねが採用へと直結しています。再アプローチ施策も引き続き機能し、累計で11名の応募を獲得（5月時点9名から+2名）。一方でスカウト配信数は依然として課題（評価△）で、6月は営業職で新規優先＋再スカウトを併用し、7月からは再スカウトのスパンを1か月に短縮して配信を強化します。MEO（Googleビジネスプロフィール）は6拠点を運用中で、6月は季節要因により多くの拠点で閲覧が前月比で微減となったものの、第二工場では反応数が前月比+146%と伸長しました。六甲アイランド梱包工場は未計測のため、プロフィール整備を今後の課題として進めます。<br><br>
+        採用以外の活動も動いています。福利厚生ではリゾートワークスを紹介し、アカウント発行まで完了（予定60%に対し達成100%）。Instagramはフィード・リール・ストーリーを各1件投稿し、フォロワーは417名（前月416名）。HPはブラッシュアップを継続しつつ、新規ページの構想案を固め、<b>noteアカウントを開設</b>しました。一方、HP新規ページの制作は予定40%に対して達成20%にとどまり、公開は7月へ持ち越しです。社内報（写真の撮り直し・構成の再構築）は6月の修正が入らず達成0%でした。活動報告書の全23項目は、進行中14／完了2／中断5／要検討2という内訳です。
       </div>
     </div>
   </section>
@@ -171,6 +188,21 @@
           <div class="label">MEO 閲覧ユーザー（5拠点合計）</div>
           <div class="num">1,808<span class="unit">人</span></div>
           <div class="note">反応 合計319件／六甲アイランドは未計測</div>
+        </div>
+        <div class="kpi-card">
+          <div class="label">スカウト送信数</div>
+          <div class="num">78<span class="unit">件</span></div>
+          <div class="note">5月56件 → 6月78件／面談3件</div>
+        </div>
+        <div class="kpi-card">
+          <div class="label">Instagram フォロワー</div>
+          <div class="num">417<span class="unit">人</span></div>
+          <div class="note">前月416人／フィード・リール・ストーリー各1件</div>
+        </div>
+        <div class="kpi-card">
+          <div class="label">活動報告書の項目数</div>
+          <div class="num">23<span class="unit">項目</span></div>
+          <div class="note">進行中14／完了2／中断5／要検討2</div>
         </div>
       </div>
     </div>
@@ -207,9 +239,37 @@
         <h3>🏷️ ブランディング・HP（継続テーマ）</h3>
         <ul>
           <li><b>サジェスト対策</b>：5月に社名＋住所のサジェスト、MEO上位表示を確認・完了。維持を継続。<span class="badge b-done">完了・維持</span></li>
-          <li><b>LLMO（AIO）対策・note</b>：AI検索時代を見据えたLLMO対策の一環として、noteコラム化の構想を継続。公開に向けて準備を進行。<span class="badge b-prog">進行中</span></li>
-          <li><b>HP新規ページ制作</b>：構成の検討・公開スケジュールの整理を継続。<span class="badge b-prog">進行中</span></li>
-          <li><b>採用募集の周知</b>：HP採用ページを軸に募集情報の発信を継続。求人票の魅力付け強化と連動。<span class="badge b-prog">継続</span></li>
+          <li><b>LLMO（AIO）対策・note</b>：AI検索時代を見据えたLLMO対策の一環として、<b>noteアカウントを開設</b>。コラムの運用構想を進行中（達成度20%）。<span class="badge b-prog">note開設</span></li>
+          <li><b>HP新規ページ制作</b>：新規ページを追加（非公開）し、公開スケジュールを整理。予定40%に対し達成20%で、公開は7月へ持ち越し。<span class="badge b-hold">予定比 遅れ</span></li>
+          <li><b>HPブラッシュアップ</b>：画像の差し替え依頼・構成の見直しを継続実施（達成度100%）。<span class="badge b-done">完了</span></li>
+          <li><b>採用募集の周知</b>：HP採用ページは6月の修正なし（現状変更なし・達成度0%）。求人票の魅力付け強化と連動して見直す。<span class="badge b-hold">修正なし</span></li>
+        </ul>
+      </div>
+
+      <div class="cat-block">
+        <h3>📱 SNS・インナーブランディング（Instagram）</h3>
+        <ul>
+          <li><b>投稿を継続</b>：フィード1件・リール1件・ストーリー1件を投稿し、月1投稿以上の運用を維持。<span class="badge b-done">達成100%</span></li>
+          <li><b>フォロワー</b>：417名（前月416名／目標400名は達成済み、1,000名に向けて+1名）。伸びは緩やかで、達成度20%にとどまる。<span class="badge b-prog">417名</span></li>
+          <li><b>投稿用画像</b>：新規撮影は行わず、過去に撮影した画像・動画からの引用で対応。<span class="badge b-done">達成100%</span></li>
+          <li><b>X（旧Twitter）・Facebook分析</b>：SNS運用の縮小方針により中断中。継続可否の判断が必要。<span class="badge b-hold">中断</span></li>
+        </ul>
+      </div>
+
+      <div class="cat-block">
+        <h3>🎁 福利厚生</h3>
+        <ul>
+          <li><b>リゾートワークスを導入</b>：サービスを紹介し、<b>アカウント発行まで完了</b>。予定60%に対し達成100%と前倒しで進んだ。<span class="badge b-done">予定超過 達成</span></li>
+          <li><b>次期企画</b>：リスキリング補助金の活用、その他の研修・講習の検討を継続。<span class="badge b-prog">検討中</span></li>
+        </ul>
+      </div>
+
+      <div class="cat-block">
+        <h3>⚙️ 社内システムの拡充・会社紹介動画</h3>
+        <ul>
+          <li><b>AIツール・SaaSの検討</b>：次の展開に向けた課題抽出とAIツールの利用検討を継続（達成度50%）。<span class="badge b-prog">50%</span></li>
+          <li><b>社内報の内容変更</b>：写真の撮り直し・構成の再構築を予定していたが、6月は修正なしで達成0%。<span class="badge b-hold">未着手</span></li>
+          <li><b>YouTube・会社紹介動画</b>：チャンネル活用は要検討（0%）。社員研修旅行の動画の一部公開も検討段階。<span class="badge b-hold">要検討</span></li>
         </ul>
       </div>
     </div>
@@ -253,28 +313,96 @@
   <!-- KPI進捗状況 -->
   <section>
     <div class="wrap">
-      <h2 class="title">📊 KPI進捗状況</h2>
+      <h2 class="title">📊 KPI進捗状況（活動報告書 6月達成度）</h2>
 
       <div class="prog-group">
-        <h3>リクルーティング</h3>
-        <div class="prog-row"><div class="pr-head"><span>採用決定（内定者の入社確定：2名）</span><span class="pct">100%</span></div><div class="bar"><span style="width:100%"></span></div></div>
-        <div class="prog-row"><div class="pr-head"><span>再アプローチ施策（累計11名の応募獲得）</span><span class="pct">100%</span></div><div class="bar"><span style="width:100%"></span></div></div>
-        <div class="prog-row"><div class="pr-head"><span>エン転職ダイレクト（スカウト・面談運用）</span><span class="pct">85%</span></div><div class="bar"><span style="width:85%"></span></div></div>
-        <div class="prog-row"><div class="pr-head"><span>スカウト配信数の確保（量の底上げ）</span><span class="pct">55%</span></div><div class="bar"><span style="width:55%"></span></div></div>
+        <h3>インナーブランディング</h3>
+        <div class="prog-row"><div class="pr-head"><span>投稿用画像撮影（予定100%）</span><span class="pct">100%</span></div><div class="bar"><span style="width:100%"></span></div></div>
+        <div class="prog-row"><div class="pr-head"><span>ストーリー・リール動画の活用（予定100%）</span><span class="pct">100%</span></div><div class="bar"><span style="width:100%"></span></div></div>
+        <div class="prog-row"><div class="pr-head"><span>SNSやサイトの活用（予定100%）</span><span class="pct">100%</span></div><div class="bar"><span style="width:100%"></span></div></div>
+        <div class="prog-row"><div class="pr-head"><span>HPの修正とブラッシュアップ（予定80%）</span><span class="pct">100%</span></div><div class="bar"><span style="width:100%"></span></div></div>
+        <div class="prog-row"><div class="pr-head"><span>新しい福利厚生情報（予定60%）</span><span class="pct">100%</span></div><div class="bar"><span style="width:100%"></span></div></div>
+        <div class="prog-row"><div class="pr-head"><span>GBPの活用（予定70%）</span><span class="pct">70%</span></div><div class="bar"><span style="width:70%"></span></div></div>
+        <div class="prog-row"><div class="pr-head"><span>1,000フォロワーの獲得（予定20%／417名）</span><span class="pct">20%</span></div><div class="bar"><span style="width:20%"></span></div></div>
       </div>
 
       <div class="prog-group">
-        <h3>MEO・Googleビジネスプロフィール</h3>
+        <h3>ブランディング</h3>
+        <div class="prog-row"><div class="pr-head"><span>サジェスト対策（5月完了・維持）</span><span class="pct">完了</span></div><div class="bar"><span style="width:100%"></span></div></div>
+        <div class="prog-row"><div class="pr-head"><span>LLMO（AIO）対策（予定20%）</span><span class="pct">20%</span></div><div class="bar"><span style="width:20%"></span></div></div>
+        <div class="prog-row"><div class="pr-head"><span>HP新規ページの制作（予定40%）</span><span class="pct">20%</span></div><div class="bar"><span style="width:20%"></span></div></div>
+        <div class="prog-row"><div class="pr-head"><span>YouTubeチャンネルの活用（予定0%・要検討）</span><span class="pct">0%</span></div><div class="bar"><span style="width:0%"></span></div></div>
+      </div>
+
+      <div class="prog-group">
+        <h3>リクルーティング</h3>
+        <div class="prog-row"><div class="pr-head"><span>エン転職ダイレクト（予定100%／スカウト78件・面談3件・田中さん入社決定）</span><span class="pct">100%</span></div><div class="bar"><span style="width:100%"></span></div></div>
+        <div class="prog-row"><div class="pr-head"><span>エン転職広告（工場内勤務）</span><span class="pct">完了</span></div><div class="bar"><span style="width:100%"></span></div></div>
+        <div class="prog-row"><div class="pr-head"><span>採用募集の周知・HPの活用（予定0%／修正なし）</span><span class="pct">0%</span></div><div class="bar"><span style="width:0%"></span></div></div>
+      </div>
+
+      <div class="prog-group">
+        <h3>社内システムの拡充</h3>
+        <div class="prog-row"><div class="pr-head"><span>課題抽出と検討・AIツールの利用（予定50%）</span><span class="pct">50%</span></div><div class="bar"><span style="width:50%"></span></div></div>
+        <div class="prog-row"><div class="pr-head"><span>内容の変更・写真の撮り直し／構成再構築（予定100%）</span><span class="pct">0%</span></div><div class="bar"><span style="width:0%"></span></div></div>
+      </div>
+
+      <div class="prog-group">
+        <h3>MEO・Googleビジネスプロフィール（外部レポート由来）</h3>
         <div class="prog-row"><div class="pr-head"><span>6拠点のGBP運用・月次レポーティング</span><span class="pct">100%</span></div><div class="bar"><span style="width:100%"></span></div></div>
         <div class="prog-row"><div class="pr-head"><span>反応（ルート検索等）の獲得・維持</span><span class="pct">70%</span></div><div class="bar"><span style="width:70%"></span></div></div>
         <div class="prog-row"><div class="pr-head"><span>六甲アイランド梱包工場のプロフィール整備</span><span class="pct">0%</span></div><div class="bar"><span style="width:0%"></span></div></div>
       </div>
 
-      <div class="prog-group">
-        <h3>ブランディング</h3>
-        <div class="prog-row"><div class="pr-head"><span>サジェスト対策（完了・維持）</span><span class="pct">100%</span></div><div class="bar"><span style="width:100%"></span></div></div>
-        <div class="prog-row"><div class="pr-head"><span>LLMO（AIO）対策・noteコラム化</span><span class="pct">30%</span></div><div class="bar"><span style="width:30%"></span></div></div>
-        <div class="prog-row"><div class="pr-head"><span>HP新規ページの制作</span><span class="pct">30%</span></div><div class="bar"><span style="width:30%"></span></div></div>
+      <div class="note-box">
+        ※ 「インナーブランディング」「ブランディング」「リクルーティング」「社内システムの拡充」の各%は、活動報告書スプレッドシート（活動報告2版・2026年シート）の<b>6月「達成度」</b>をそのまま記載しています。カッコ内は同シートの「予定」%です。MEOの3項目のみ、インターロック提供のMEO月次レポートに基づく進捗の目安です。
+      </div>
+    </div>
+  </section>
+
+  <!-- 活動報告書 全項目 -->
+  <section class="alt">
+    <div class="wrap">
+      <h2 class="title">📋 活動報告書 全項目一覧（2026年6月）</h2>
+      <div class="stat-line">
+        <span>全23項目</span><span>進行中 14</span><span>完了 2</span><span>中断 5</span><span>要検討 2</span>
+      </div>
+      <div class="table-wrap">
+        <table class="act">
+          <thead>
+            <tr>
+              <th>KGI</th><th>KPI</th><th>内容</th><th>状況</th><th>6月 予定</th><th>6月 達成度</th><th>報告コメント</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr><td class="kgi">インナーブランディング</td><td>インスタグラム運用</td><td class="n">投稿用画像撮影</td><td class="c"><span class="st st-prog">進行中</span></td><td class="c">100%</td><td class="c">100%</td><td>過去画像からの引用</td></tr>
+            <tr><td class="kgi">インナーブランディング</td><td>インスタグラム運用</td><td class="n">1,000フォロワーの獲得</td><td class="c"><span class="st st-prog">進行中</span></td><td class="c">20%</td><td class="c">20%</td><td>417フォロワー（前月416）</td></tr>
+            <tr><td class="kgi">インナーブランディング</td><td>インスタグラム運用</td><td class="n">ストーリー・リール動画の活用</td><td class="c"><span class="st st-prog">進行中</span></td><td class="c">100%</td><td class="c">100%</td><td>フィード1件、リール1件、ストーリー1件</td></tr>
+            <tr><td class="kgi">インナーブランディング</td><td>インスタグラム運用</td><td class="n">Facebookから分析情報取得</td><td class="c"><span class="st st-stop">中断</span></td><td class="c">—</td><td class="c">—</td><td>—</td></tr>
+            <tr><td class="kgi">インナーブランディング</td><td>インスタグラム運用</td><td class="n">その他SNSのアカウント連携</td><td class="c"><span class="st st-stop">中断</span></td><td class="c">—</td><td class="c">—</td><td>—</td></tr>
+            <tr><td class="kgi">インナーブランディング</td><td>X（旧Twitter）運用</td><td class="n">インスタグラムとの連携</td><td class="c"><span class="st st-stop">中断</span></td><td class="c">—</td><td class="c">—</td><td>—</td></tr>
+            <tr><td class="kgi">インナーブランディング</td><td>X（旧Twitter）運用</td><td class="n">フォロワーを増やす（100フォロワー）</td><td class="c"><span class="st st-stop">中断</span></td><td class="c">—</td><td class="c">—</td><td>—</td></tr>
+            <tr><td class="kgi">インナーブランディング</td><td>ホームページの再考</td><td class="n">HPの修正とブラッシュアップ</td><td class="c"><span class="st st-prog">進行中</span></td><td class="c">80%</td><td class="c">100%</td><td>CTIHPブラッシュアップ／新規ページの構想案／noteアカウントの作成</td></tr>
+            <tr><td class="kgi">インナーブランディング</td><td>ホームページの再考</td><td class="n">GBPの活用</td><td class="c"><span class="st st-prog">進行中</span></td><td class="c">70%</td><td class="c">70%</td><td>MEO分析</td></tr>
+            <tr><td class="kgi">インナーブランディング</td><td>ホームページの再考</td><td class="n">SNSやサイトの活用</td><td class="c"><span class="st st-prog">進行中</span></td><td class="c">100%</td><td class="c">100%</td><td>インスタグラム月に1投稿以上</td></tr>
+            <tr><td class="kgi">インナーブランディング</td><td>福利厚生</td><td class="n">【次期企画】新しい福利厚生情報</td><td class="c"><span class="st st-prog">進行中</span></td><td class="c">60%</td><td class="c">100%</td><td>リゾートワークスのご紹介とアカウント発行</td></tr>
+            <tr><td class="kgi">ブランディング</td><td>サジェスト対策</td><td class="n">サジェスト対策の展開</td><td class="c"><span class="st st-done">完了</span></td><td class="c">—</td><td class="c">—</td><td>5月に完了。以降は維持</td></tr>
+            <tr><td class="kgi">ブランディング</td><td>LLMO</td><td class="n">LLMO（AIO）対策</td><td class="c"><span class="st st-prog">進行中</span></td><td class="c">20%</td><td class="c">20%</td><td>LLMO分析</td></tr>
+            <tr><td class="kgi">ブランディング</td><td>HP戦略の見直し</td><td class="n">HP新規ページの制作</td><td class="c"><span class="st st-prog">進行中</span></td><td class="c">40%</td><td class="c">20%</td><td>新規ページの追加と非公開／ページの公開スケジュール立て</td></tr>
+            <tr><td class="kgi">ブランディング</td><td>会社紹介動画</td><td class="n">YouTubeチャンネルの活用</td><td class="c"><span class="st st-check">要検討</span></td><td class="c">0%</td><td class="c">0%</td><td>—</td></tr>
+            <tr><td class="kgi">ブランディング</td><td>会社紹介動画</td><td class="n">SNS運用の見直し</td><td class="c"><span class="st st-stop">中断</span></td><td class="c">—</td><td class="c">—</td><td>—</td></tr>
+            <tr><td class="kgi">ブランディング</td><td>会社紹介動画</td><td class="n">社員研修旅行の動画を活用（一部公開）</td><td class="c"><span class="st st-check">要検討</span></td><td class="c">—</td><td class="c">—</td><td>—</td></tr>
+            <tr><td class="kgi">リクルーティング</td><td>採用情報</td><td class="n">採用募集の周知（HPの活用）</td><td class="c"><span class="st st-prog">進行中</span></td><td class="c">0%</td><td class="c">0%</td><td>現状変更なし</td></tr>
+            <tr><td class="kgi">リクルーティング</td><td>新卒採用</td><td class="n">新卒採用に向けて（ハローワーク活用）</td><td class="c"><span class="st st-prog">進行中</span></td><td class="c">—</td><td class="c">—</td><td>社長が中心で地元へアプローチ</td></tr>
+            <tr><td class="kgi">リクルーティング</td><td>中途採用（営業／機械設計／電気設計）</td><td class="n">エン転職ダイレクト</td><td class="c"><span class="st st-prog">進行中</span></td><td class="c">100%</td><td class="c">100%</td><td>スカウトの送信78件／面談の実施3件／購買：田中さん入社決定</td></tr>
+            <tr><td class="kgi">リクルーティング</td><td>中途採用（工場内勤務）</td><td class="n">エン転職広告</td><td class="c"><span class="st st-done">完了</span></td><td class="c">—</td><td class="c">完了</td><td>完了</td></tr>
+            <tr><td class="kgi">社内システムの拡充</td><td>新たな展開</td><td class="n">課題抽出と検討（AIツール・SaaS）</td><td class="c"><span class="st st-prog">進行中</span></td><td class="c">50%</td><td class="c">50%</td><td>AIツールの利用検討</td></tr>
+            <tr><td class="kgi">社内システムの拡充</td><td>新たな展開</td><td class="n">内容の変更（写真の撮り直し・構成の再構築）</td><td class="c"><span class="st st-prog">進行中</span></td><td class="c">100%</td><td class="c">0%</td><td>修正なし</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="note-box">
+        ※ 活動報告書スプレッドシート「活動報告2版」2026年シートの全23行を、6月列（予定／達成度／報告コメント）とあわせて掲載しています。「—」は当該月に入力のない項目です。
       </div>
     </div>
   </section>
@@ -291,6 +419,9 @@
             <li>田中さんは最終面接で高評価（スキル・経験＋人柄）。スカウト・立地・挑戦する社風が決め手となった。</li>
             <li>再アプローチ施策が継続的に機能（5月9名→6月11名）。2回の再アプローチ運用が応募獲得に直結。</li>
             <li>第二工場のMEO反応が前月比+146%と伸長。拠点単位での改善が数値に表れ始めた。</li>
+            <li>福利厚生はリゾートワークスの紹介からアカウント発行まで完了（予定60%→達成100%）。計画を前倒しで消化した。</li>
+            <li>Instagramはフィード・リール・ストーリーを各1件投稿し、月1投稿以上の運用が定着（達成100%／417フォロワー）。</li>
+            <li>HPブラッシュアップは達成100%。noteアカウントを開設し、LLMO対策の受け皿が整った。</li>
           </ul>
         </div>
         <div class="insight issue">
@@ -300,6 +431,9 @@
             <li>応募率が課題。求人票に「やりがい」「入社後の流れ」を追記し、社内メンバー情報（現在1名）を拡充して魅力付けを強化する。</li>
             <li>ターゲティングを最適化。「最終ログイン1日以内」「直近の転職活動：応募あり」＋35歳以上・男性・関西在住を重点に配信する。</li>
             <li>MEOは多くの拠点で閲覧が前月比微減。投稿・口コミ促進で底上げし、六甲アイランド梱包工場のプロフィールを整備する。</li>
+            <li>HP新規ページの制作が予定40%に対し達成20%。ページは非公開のままで、7月に公開まで進める。</li>
+            <li>社内報（内容の変更）は予定100%に対し達成0%（修正なし）。写真の撮り直しと構成の再構築に着手する。</li>
+            <li>X（旧Twitter）・Facebook分析・YouTubeは中断／要検討のまま。リソース配分を踏まえ、継続可否を判断する。</li>
           </ul>
         </div>
       </div>
@@ -314,7 +448,9 @@
       <div class="road-step"><div class="no">2</div><div class="txt"><b>スカウト配信の強化</b>：営業職は新規優先＋再スカウトを併用。再スカウトのスパンを1か月に短縮し、35歳以上・男性・関西在住＋「最終ログイン1日以内」を重点ターゲットに配信量を回復する。</div></div>
       <div class="road-step"><div class="no">3</div><div class="txt"><b>求人票の改善</b>：全求人に「やりがい」「入社後の流れ」を追記し、社内メンバー情報を拡充して応募率を高める。</div></div>
       <div class="road-step"><div class="no">4</div><div class="txt"><b>MEOの底上げ</b>：6拠点の投稿・口コミ促進を継続。六甲アイランド梱包工場のプロフィールを整備し、計測対象に加える。</div></div>
-      <div class="road-step"><div class="no">5</div><div class="txt"><b>ブランディングの継続</b>：LLMO（AIO）対策・noteコラム化、HP新規ページ制作を推進し、公開スケジュールを確定する。</div></div>
+      <div class="road-step"><div class="no">5</div><div class="txt"><b>ブランディングの継続</b>：LLMO（AIO）対策・開設したnoteの運用開始、HP新規ページの公開まで進め、スケジュールを確定する。</div></div>
+      <div class="road-step"><div class="no">6</div><div class="txt"><b>SNS・福利厚生</b>：Instagramの月1投稿以上を維持しつつ、フォロワー伸長の打ち手を検討。リゾートワークスの社内周知を進め、利用率を高める。</div></div>
+      <div class="road-step"><div class="no">7</div><div class="txt"><b>社内システム</b>：AIツール・SaaSの利用検討を具体化（現在50%）。社内報の写真撮り直し・構成再構築に着手する。</div></div>
     </div>
   </section>
 
@@ -333,7 +469,7 @@
         次回定例MTG（エン転職）：2026年8月10日（月）15:00〜
       </div>
       <div class="note-box">
-        ※ 本レポートは、エン転職ダイレクト「2026年7月6日 定例MTG資料」（選考状況・スカウト効果・再アプローチ実績、〜7月6日時点）と、インターロック提供「2026年6月度 MEO月次レポート」（6拠点、対象期間2026/6/1〜6/30）に基づいて作成しています。ブランディング関連項目は5月度からの継続テーマであり、進捗度は活動計画に基づく目安です。
+        ※ 本レポートは、①活動報告書スプレッドシート「活動報告2版」2026年シート（全23項目・6月列）、②エン転職ダイレクト「2026年7月6日 定例MTG資料」（選考状況・スカウト効果・再アプローチ実績、〜7月6日時点）、③インターロック提供「2026年6月度 MEO月次レポート」（6拠点、対象期間2026/6/1〜6/30）に基づいて作成しています。KPI進捗の%は①の6月「達成度」を正としています（MEOの3項目のみ③に基づく目安）。
       </div>
     </div>
   </div>
