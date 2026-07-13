@@ -15,7 +15,22 @@ fc-list | grep -q "Noto Sans CJK" || sudo apt-get install -y fonts-noto-cjk font
 python3 -c "import PIL" || pip3 install pillow
 ```
 
-## 2. 素材の把握
+## 2. 素材の入手
+
+素材動画はクライアント共有のGoogle Driveフォルダに置かれる:
+https://drive.google.com/drive/folders/1gtsVUuTTn64YIvfjasmujKI7d1TrmYPs
+
+Google Drive MCPツールで取得する（チャット添付があればそちらを優先）:
+
+1. `mcp__Google_Drive__search_files` で `parentId = '1gtsVUuTTn64YIvfjasmujKI7d1TrmYPs'` を検索
+   （サブフォルダ「動画」= `1FmxkCE4NOKmcdPneUjthxK4kbax5EUno`、「画像」= `1d9zNTIU0Y3blsqV4B8OxhSWOSMNytovX` も同様に検索できる）
+2. どの動画を使うか不明な場合は、ファイル名と更新日時を提示してユーザーに確認する（通常は最新のアップロードが対象）
+3. `mcp__Google_Drive__download_file_content` でbase64を取得し、デコードして作業ディレクトリに保存:
+   ```bash
+   base64 -d encoded.txt > source.mp4
+   ```
+
+## 3. 素材の把握
 
 1. `ffprobe` で解像度・尺・音声の有無を確認する。
 2. 1fpsでフレームを抽出し、Readツールで**実際に見て**シーンを把握する:
@@ -25,7 +40,7 @@ python3 -c "import PIL" || pip3 install pillow
 3. 「見せ場」（機械が動く瞬間、製品が持ち上がる瞬間など）が何秒にあるかをメモする。キメのテロップはここに合わせる。
 4. 冒頭のカメラの傾き・手ブレ、末尾のブレは `trim_start` / `duration` でカットする。
 
-## 3. テロップ構成のルール
+## 4. テロップ構成のルール
 
 - **丁寧語は使わない**。短いフレーズをテンポよく（1カット 0.8〜1.8秒、15秒で10〜11カットが目安）。
 - 構成の型: 「課題の提示（あるある・ぼやき）→ 転機（そんな時にはコレ）→ 商品名・解決策（キメ）→ 効果 → 締め（お任せあれ等)」
@@ -35,7 +50,7 @@ python3 -c "import PIL" || pip3 install pillow
 - キメには**湧き出し演出**（同じ文言の縦書きテロップが画面中に次々ポップする）を付けられる。ユーザーに提案してよい。
 - 画面下部 約420px はInstagramのキャプション帯と重なるため長居させない（スクリプトの既定配置なら問題ない）。
 
-## 4. レンダリング
+## 5. レンダリング
 
 `scripts/render_reel.py` に設定JSONを渡す。時刻はすべて**トリム後**のタイムライン秒。
 
@@ -69,7 +84,7 @@ python3 scripts/render_reel.py config.json
 
 サイズの目安: 8〜9文字は size 108〜115、6文字は 120〜125、4〜5文字は 135〜145。キメは 150（文字数が少なければ 200 超も可）。
 
-## 5. 検証（必須）
+## 6. 検証（必須）
 
 各テロップの時間帯からフレームを抽出し、Readツールで**目視確認**する:
 
@@ -79,7 +94,7 @@ for t in 0.7 2.0 3.3 ... ; do ffmpeg -y -ss $t -i reel_v1.mp4 -frames:v 1 -vf sc
 
 確認ポイント: 文字が画面内に収まっているか／「ー」「…」が縦組みになっているか／キメが中央に来ているか／被写体の見せ場をテロップが隠していないか。
 
-## 6. 納品
+## 7. 納品
 
 - SendUserFile で mp4 を送る。
 - 素材に音声がない場合はBGMなしで納品し、「Instagramアプリ内でトレンド音源を付けるとリーチが伸びる」と添える。
