@@ -1,0 +1,559 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>株式会社CTI 2026年7月度 活動報告サマリー</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500;700;900&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --navy:#1a365d; --blue:#2b6cb0; --blue2:#3182ce; --sky:#ebf4ff;
+    --ink:#1a202c; --gray:#4a5568; --line:#e2e8f0; --bg:#f7fafc;
+    --green:#2f855a; --green-bg:#f0fff4; --orange:#c05621; --orange-bg:#fffaf0;
+  }
+  *{box-sizing:border-box;margin:0;padding:0;}
+  body{font-family:'Noto Sans JP',sans-serif;color:var(--ink);background:var(--bg);line-height:1.8;-webkit-font-smoothing:antialiased;}
+
+  /* ===== 認証画面 ===== */
+  #auth-screen{position:fixed;inset:0;z-index:1000;display:flex;align-items:center;justify-content:center;
+    background:linear-gradient(135deg,var(--navy),var(--blue) 60%,var(--blue2));padding:20px;}
+  .auth-card{background:#fff;border-radius:18px;box-shadow:0 20px 60px rgba(0,0,0,.25);padding:48px 36px;max-width:380px;width:100%;text-align:center;}
+  .auth-lock{width:64px;height:64px;border-radius:50%;background:var(--sky);display:flex;align-items:center;justify-content:center;margin:0 auto 20px;font-size:30px;}
+  .auth-card h2{font-size:1.25rem;color:var(--navy);margin-bottom:8px;}
+  .auth-card p{font-size:.9rem;color:var(--gray);margin-bottom:24px;}
+  #password-input{width:100%;padding:14px 16px;font-size:1rem;border:2px solid var(--line);border-radius:10px;margin-bottom:14px;font-family:inherit;}
+  #password-input:focus{outline:none;border-color:var(--blue2);}
+  .auth-btn{width:100%;padding:14px;font-size:1rem;font-weight:700;color:#fff;background:linear-gradient(135deg,var(--blue),var(--blue2));border:none;border-radius:10px;cursor:pointer;transition:opacity .2s;font-family:inherit;}
+  .auth-btn:hover{opacity:.9;}
+  #auth-error{display:none;color:#c53030;font-size:.85rem;margin-top:12px;}
+
+  /* ===== レポート本体 ===== */
+  #report-content{display:none;}
+  .wrap{max-width:960px;margin:0 auto;padding:0 20px;}
+
+  .hero{background:linear-gradient(135deg,var(--navy),var(--blue) 55%,var(--blue2));color:#fff;padding:56px 0 48px;}
+  .hero .wrap{text-align:center;}
+  .hero .company{font-size:.95rem;letter-spacing:.18em;opacity:.85;margin-bottom:10px;}
+  .hero h1{font-size:2rem;font-weight:900;line-height:1.4;margin-bottom:12px;}
+  .hero .sub{font-size:1rem;opacity:.9;}
+
+  section{padding:40px 0;}
+  section.alt{background:#fff;}
+  h2.title{font-size:1.4rem;color:var(--navy);margin-bottom:22px;padding-bottom:10px;border-bottom:3px solid var(--blue2);display:inline-block;}
+
+  .summary-card{background:#fff;border-left:5px solid var(--blue2);border-radius:12px;box-shadow:0 4px 16px rgba(26,54,93,.08);padding:24px 26px;color:var(--gray);font-size:1.02rem;}
+
+  .kpi-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:18px;}
+  .kpi-card{background:linear-gradient(135deg,#fff,var(--sky));border:1px solid var(--line);border-radius:16px;box-shadow:0 6px 20px rgba(26,54,93,.08);padding:26px 20px;text-align:center;}
+  .kpi-card .label{font-size:.85rem;color:var(--gray);margin-bottom:10px;}
+  .kpi-card .num{font-size:2rem;font-weight:900;color:var(--blue);line-height:1.2;}
+  .kpi-card .unit{font-size:.95rem;font-weight:700;color:var(--blue);}
+  .kpi-card .note{font-size:.78rem;color:var(--gray);margin-top:8px;}
+  .kpi-card.muted .num{color:var(--gray);}
+
+  .cat-block{background:#fff;border-radius:14px;box-shadow:0 4px 16px rgba(26,54,93,.07);padding:22px 24px;margin-bottom:18px;}
+  .cat-block h3{font-size:1.08rem;color:var(--navy);margin-bottom:14px;display:flex;align-items:center;gap:8px;}
+  .cat-block ul{list-style:none;}
+  .cat-block li{padding:9px 0;border-bottom:1px dashed var(--line);font-size:.95rem;color:var(--gray);}
+  .cat-block li:last-child{border-bottom:none;}
+  .cat-block li b{color:var(--ink);}
+  .badge{display:inline-block;font-size:.72rem;font-weight:700;padding:2px 9px;border-radius:20px;margin-left:6px;vertical-align:middle;}
+  .b-done{background:var(--green-bg);color:var(--green);}
+  .b-prog{background:var(--sky);color:var(--blue);}
+  .b-hold{background:#fef2f2;color:#c53030;}
+  .b-na{background:#edf2f7;color:var(--gray);}
+
+  /* ===== MEOテーブル ===== */
+  .table-wrap{overflow-x:auto;background:#fff;border-radius:14px;box-shadow:0 4px 16px rgba(26,54,93,.07);padding:8px;}
+  table.meo{width:100%;border-collapse:collapse;font-size:.9rem;min-width:640px;}
+  table.meo th,table.meo td{padding:11px 12px;text-align:center;border-bottom:1px solid var(--line);}
+  table.meo thead th{background:var(--navy);color:#fff;font-weight:700;font-size:.82rem;}
+  table.meo tbody th{text-align:left;color:var(--ink);font-weight:700;background:var(--sky);}
+  table.meo tbody tr:last-child td,table.meo tbody tr:last-child th{border-bottom:none;}
+  table.meo tfoot td,table.meo tfoot th{background:#edf2f7;font-weight:900;color:var(--navy);border-top:2px solid var(--blue2);}
+  .up{color:var(--green);font-weight:700;}
+  .down{color:#c53030;font-weight:700;}
+  .flat{color:var(--gray);}
+
+  .alert-box{background:var(--orange-bg);border:1px solid #feebc8;border-left:5px solid var(--orange);border-radius:12px;padding:18px 22px;font-size:.92rem;color:var(--gray);margin-bottom:18px;}
+  .alert-box b{color:var(--orange);}
+
+  .prog-row{margin-bottom:16px;}
+  .prog-row .pr-head{display:flex;justify-content:space-between;font-size:.92rem;margin-bottom:6px;gap:12px;}
+  .prog-row .pr-head .pct{font-weight:700;color:var(--blue);white-space:nowrap;}
+  .bar{height:12px;background:var(--line);border-radius:8px;overflow:hidden;}
+  .bar > span{display:block;height:100%;background:linear-gradient(90deg,var(--blue),var(--blue2));border-radius:8px;}
+  .bar.behind > span{background:linear-gradient(90deg,#dd6b20,#ed8936);}
+  .bar.na > span{background:repeating-linear-gradient(45deg,#cbd5e0,#cbd5e0 6px,#e2e8f0 6px,#e2e8f0 12px);}
+  .prog-row .pr-head .pct.na{color:var(--gray);font-weight:500;}
+  .prog-group{background:#fff;border-radius:14px;box-shadow:0 4px 16px rgba(26,54,93,.07);padding:22px 24px;margin-bottom:18px;}
+  .prog-group h3{font-size:1.05rem;color:var(--navy);margin-bottom:16px;}
+
+  .insight-grid{display:grid;grid-template-columns:1fr 1fr;gap:18px;}
+  .insight{border-radius:14px;padding:22px 24px;}
+  .insight.success{background:var(--green-bg);border:1px solid #c6f6d5;}
+  .insight.issue{background:var(--orange-bg);border:1px solid #feebc8;}
+  .insight h3{font-size:1.05rem;margin-bottom:12px;}
+  .insight.success h3{color:var(--green);}
+  .insight.issue h3{color:var(--orange);}
+  .insight ul{list-style:none;}
+  .insight li{padding:7px 0 7px 20px;position:relative;font-size:.92rem;color:var(--gray);}
+  .insight li:before{content:"";position:absolute;left:0;top:14px;width:8px;height:8px;border-radius:50%;}
+  .insight.success li:before{background:var(--green);}
+  .insight.issue li:before{background:var(--orange);}
+
+  .road-step{display:flex;gap:16px;background:#fff;border-radius:12px;box-shadow:0 3px 12px rgba(26,54,93,.06);padding:18px 22px;margin-bottom:14px;}
+  .road-step .no{flex:0 0 38px;height:38px;border-radius:50%;background:linear-gradient(135deg,var(--blue),var(--blue2));color:#fff;font-weight:900;display:flex;align-items:center;justify-content:center;}
+  .road-step .txt{font-size:.96rem;color:var(--gray);padding-top:6px;}
+  .road-step .txt b{color:var(--ink);}
+
+  .footer{background:linear-gradient(135deg,var(--navy),var(--blue2));color:#fff;padding:40px 0;}
+  .footer h2{font-size:1.3rem;font-weight:900;margin-bottom:20px;text-align:center;}
+  .focus-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin-bottom:24px;}
+  .focus-item{background:rgba(255,255,255,.12);border-radius:12px;padding:18px 14px;text-align:center;font-size:.9rem;font-weight:500;}
+  .focus-item .ic{font-size:1.6rem;display:block;margin-bottom:8px;}
+  .footer .meta{text-align:center;font-size:.85rem;opacity:.85;border-top:1px solid rgba(255,255,255,.25);padding-top:18px;}
+
+  .note-box{background:#fff;border:1px dashed var(--line);border-radius:10px;padding:14px 18px;font-size:.82rem;color:var(--gray);margin-top:18px;}
+
+  /* ===== 活動報告書 全項目テーブル ===== */
+  table.act{width:100%;border-collapse:collapse;font-size:.84rem;min-width:820px;}
+  table.act th,table.act td{padding:9px 10px;border-bottom:1px solid var(--line);vertical-align:top;text-align:left;color:var(--gray);}
+  table.act thead th{background:var(--navy);color:#fff;font-weight:700;font-size:.78rem;text-align:center;}
+  table.act td.c{text-align:center;white-space:nowrap;}
+  table.act td.kgi{font-weight:700;color:var(--navy);background:var(--sky);white-space:nowrap;}
+  table.act td.n{font-weight:700;color:var(--ink);}
+  table.act tbody tr:hover td{background:#fbfdff;}
+  .st{display:inline-block;font-size:.72rem;font-weight:700;padding:2px 9px;border-radius:20px;white-space:nowrap;}
+  .st-prog{background:var(--sky);color:var(--blue);}
+  .st-done{background:var(--green-bg);color:var(--green);}
+  .st-stop{background:#fef2f2;color:#c53030;}
+  .st-check{background:var(--orange-bg);color:var(--orange);}
+  .cont{color:#718096;font-style:normal;}
+  .stat-line{display:flex;flex-wrap:wrap;gap:10px;margin-bottom:14px;}
+  .stat-line span{font-size:.85rem;font-weight:700;padding:6px 14px;border-radius:20px;background:#fff;border:1px solid var(--line);color:var(--gray);}
+
+  @media(max-width:680px){
+    .hero h1{font-size:1.5rem;}
+    .kpi-grid,.insight-grid,.focus-grid{grid-template-columns:1fr;}
+  }
+</style>
+</head>
+<body>
+
+<!-- ===== 認証画面 ===== -->
+<div id="auth-screen">
+  <div class="auth-card">
+    <div class="auth-lock">🔒</div>
+    <h2>株式会社CTI 活動報告</h2>
+    <p>2026年7月度サマリー<br>パスワードを入力してください</p>
+    <input type="password" id="password-input" placeholder="パスワード" autocomplete="off"
+           onkeydown="if(event.key==='Enter')checkPassword()">
+    <button class="auth-btn" onclick="checkPassword()">アクセス</button>
+    <div id="auth-error">パスワードが正しくありません</div>
+  </div>
+</div>
+
+<!-- ===== レポート本体 ===== -->
+<div id="report-content">
+
+  <div class="hero">
+    <div class="wrap">
+      <div class="company">株式会社CTI ＜No.3代行・伴走支援＞</div>
+      <h1>2026年7月度 活動報告サマリー</h1>
+      <div class="sub">リクルーティング／MEO・GBP／ブランディング／SNS・福利厚生・社内システム</div>
+    </div>
+  </div>
+
+  <!-- エグゼクティブサマリー -->
+  <section>
+    <div class="wrap">
+      <h2 class="title">📈 エグゼクティブサマリー</h2>
+      <div class="summary-card">
+        7月は、これまでの採用活動が<b>2名の入社</b>という形で実を結んだ月となりました。渡邊さん（機械設計）・田中さん（購買担当）が<b>7月21日に入社</b>。いずれもスカウトが起点であり、母集団形成から内定承諾までの一連の流れが機能していることを示しています。スカウト配信も改善が明確に表れ、送信数は6月78件から<b>90件（+12件）</b>へ増加しました。6月からの課題であった「配信量の確保」に対し、再スカウトのスパンを2か月から1か月へ短縮した施策が効いた形です。一方、7月の新規応募は提案営業の2件にとどまり、1件は面談実施後に見送り、1件は面談日程の調整中に連絡が取れなくなりました。面談実施は2件で、目標の4件には届いていません。<br><br>
+        エン転職ダイレクトの全期間累計では、送信536通に対し開封率77.8%（開封417／配信）、閲覧率37.2%（閲覧155／開封）、CVR13.5%（応募21／閲覧）、応募率3.9%（応募21／送信）となりました。エン転職社の資料では、これら4指標はいずれも他社平均を大きく上回る成果であると評価されています。とくに主力の<b>提案営業は応募率3.2%（他社平均1.8%）</b>と高水準です。再アプローチ施策も継続的に機能し、再アプローチ経由の応募は累計13件（6月11件から+2件）となりました。<br><br>
+        採用以外では、福利厚生でリゾートワークスの紹介を継続（予定70%に対し達成100%）。HPはブラッシュアップを継続しつつ、新規ページを非公開のまま整備し、noteの構想づくりを進めています。ただし<b>HP新規ページの制作は予定50%に対し達成30%</b>と遅れが続いており、公開時期の確定が課題です。Instagramのフォロワーは414名（前月417名から-3名）と微減しました。社内報（写真の撮り直し・構成の再構築）は7月も修正が入らず達成0%です。活動報告書の全23項目は、進行中14／完了2／中断5／要検討2という内訳です。<br><br>
+        なお、<b>2026年7月度のMEO月次レポート（6拠点）は本レポート作成時点で未着</b>のため、拠点別データは6月度の数値を最新値として掲載しています。7月度の数値は次回以降に反映します。
+      </div>
+    </div>
+  </section>
+
+  <!-- KPIカード -->
+  <section class="alt">
+    <div class="wrap">
+      <h2 class="title">📊 主要指標（7月）</h2>
+      <div class="kpi-grid">
+        <div class="kpi-card">
+          <div class="label">スカウト経由の入社</div>
+          <div class="num">2<span class="unit">名 入社</span></div>
+          <div class="note">渡邊さん（機械設計）・田中さん（購買）／7月21日入社</div>
+        </div>
+        <div class="kpi-card">
+          <div class="label">スカウト送信数</div>
+          <div class="num">90<span class="unit">件</span></div>
+          <div class="note">6月78件 → 7月90件（+12件）／面談2件</div>
+        </div>
+        <div class="kpi-card">
+          <div class="label">再アプローチ経由の応募</div>
+          <div class="num">13<span class="unit">件（累計）</span></div>
+          <div class="note">6月11件 → 7月13件（+2件）</div>
+        </div>
+        <div class="kpi-card">
+          <div class="label">提案営業の応募率（全期間）</div>
+          <div class="num">3.2<span class="unit">%</span></div>
+          <div class="note">他社平均1.8%／送信401通・応募13件</div>
+        </div>
+        <div class="kpi-card">
+          <div class="label">Instagram フォロワー</div>
+          <div class="num">414<span class="unit">名</span></div>
+          <div class="note">前月417名（-3名）／フィード・リール・ストーリー各1件</div>
+        </div>
+        <div class="kpi-card muted">
+          <div class="label">MEO 閲覧ユーザー（6月度・最新受領値）</div>
+          <div class="num">1,808<span class="unit">人</span></div>
+          <div class="note">5拠点合計／<b>7月度レポートは未着のため未計測</b></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 主要活動ハイライト -->
+  <section>
+    <div class="wrap">
+      <h2 class="title">⭐ 主要活動ハイライト（7月）</h2>
+
+      <div class="cat-block">
+        <h3>🎯 リクルーティング（エン転職ダイレクト）</h3>
+        <ul>
+          <li><b>2名が入社</b>：渡邊さん（機械設計）、田中さん（購買担当）がともに7月21日に入社。いずれもスカウト起点での採用。<span class="badge b-done">入社完了</span></li>
+          <li><b>スカウト配信を強化</b>：送信90件（6月78件から+12件）。再スカウトのスパンを2か月→1か月へ短縮した施策が配信量の回復につながった。<span class="badge b-done">+12件</span></li>
+          <li><b>7月の新規応募は2件（ともに提案営業）</b>：1件は一次面談を実施したものの見送り、1件は面談日程の調整中に連絡が取れず面談に至らず。応募者への連絡は原則翌日に行い、メールとGoogle Meetの二重連絡でフォローを継続。<span class="badge b-hold">選考未成立</span></li>
+          <li><b>面談実施は2件</b>：6月末応募の提案営業候補者の一次面接（7/9）を含む2件。営業経験・適性の面で見送りとなり、目標4件に対して未達。<span class="badge b-hold">目標4件に未達</span></li>
+          <li><b>スカウト効果は他社平均を大きく上回る</b>：全期間累計で送信536通・開封率77.8%・閲覧率37.2%・CVR13.5%・応募率3.9%（エン転職社の評価）。<span class="badge b-done">他社比 優位</span></li>
+          <li><b>再アプローチが機能</b>：1回目活用率90.3%（484/536）、2回目71.5%（383/536）。再アプローチ経由の応募は累計13件。今後は2回目の再アプローチを必須運用とする方針。<span class="badge b-done">機能中</span></li>
+          <li><b>購買担当の求人はクローズ</b>：田中さんの入社決定に伴い、購買担当の募集は終了。今後は営業・機械設計・電気設計に配信を集中する。<span class="badge b-done">充足</span></li>
+        </ul>
+      </div>
+
+      <div class="cat-block">
+        <h3>📍 MEO・Googleビジネスプロフィール（6拠点）</h3>
+        <ul>
+          <li><b>7月度レポートは未着</b>：インターロック提供のMEO月次レポート（6拠点）が本レポート作成時点で届いていないため、7月の実数は未計測。<span class="badge b-na">7月分 未着</span></li>
+          <li><b>直近の実績（6月度）</b>：5拠点合計で閲覧1,808人・反応319件。第二工場は反応数が48件→70件（前月比146%、+22件）と伸長。</li>
+          <li><b>GBPの活用</b>：活動報告書上の達成度は60%（予定70%）で、予定をやや下回る。MEO分析の継続が必要。<span class="badge b-prog">60%</span></li>
+          <li><b>六甲アイランド梱包工場</b>：プロフィール未整備の状態が継続。登録・整備が引き続き課題。<span class="badge b-hold">未整備</span></li>
+        </ul>
+      </div>
+
+      <div class="cat-block">
+        <h3>🏷️ ブランディング・HP</h3>
+        <ul>
+          <li><b>HPブラッシュアップ</b>：継続実施し達成度100%（予定100%）。新規ページを追加したうえで非公開とし、公開準備を進行中。<span class="badge b-done">達成100%</span></li>
+          <li><b>HP新規ページの制作</b>：予定50%に対し達成30%。新規ページの構想と公開スケジュールの検討は進んだが、公開には至らず。<span class="badge b-hold">予定比 遅れ</span></li>
+          <li><b>note</b>：6月に開設したアカウントの運用構想を作成中。コラムページの公開スケジュールとあわせて設計を進める。<span class="badge b-prog">構想中</span></li>
+          <li><b>LLMO（AIO）対策</b>：達成度20%（予定20%）。インターロックによる対策とLLMO分析を継続。<span class="badge b-prog">継続中</span></li>
+          <li><b>サジェスト対策</b>：5月に完了。以降は維持のみ。<span class="badge b-done">完了・維持</span></li>
+        </ul>
+      </div>
+
+      <div class="cat-block">
+        <h3>📱 SNS・インナーブランディング（Instagram）</h3>
+        <ul>
+          <li><b>投稿を継続</b>：フィード1件・リール1件・ストーリー1件を投稿し、月1投稿以上の運用を維持（達成度100%）。<span class="badge b-done">達成100%</span></li>
+          <li><b>フォロワーは微減</b>：414名（前月417名／-3名）。1,000名の目標に対し達成度20%で横ばいが続く。<span class="badge b-hold">-3名</span></li>
+          <li><b>投稿用画像</b>：新規撮影は行わず、社員研修旅行の記録画像からの引用で対応（達成度100%）。<span class="badge b-done">達成100%</span></li>
+          <li><b>X（旧Twitter）・Facebook分析</b>：SNS運用の縮小方針により中断が継続。継続可否の判断が必要。<span class="badge b-hold">中断</span></li>
+        </ul>
+      </div>
+
+      <div class="cat-block">
+        <h3>🎁 福利厚生</h3>
+        <ul>
+          <li><b>リゾートワークス</b>：サービスの紹介を継続し、達成度100%（予定70%）。予定を上回って進捗。<span class="badge b-done">予定超過 達成</span></li>
+          <li><b>アカウント運用</b>：6月に発行したアカウントの運用方法について、社内での取り扱いを確認中。<span class="badge b-prog">確認中</span></li>
+          <li><b>次期企画</b>：リスキリング補助金の活用、その他の研修・講習の検討を継続。<span class="badge b-prog">検討中</span></li>
+        </ul>
+      </div>
+
+      <div class="cat-block">
+        <h3>⚙️ 社内システムの拡充・会社紹介動画</h3>
+        <ul>
+          <li><b>AIツール・SaaSの検討</b>：課題抽出とAIツールの利用検討を継続（達成度50%／予定50%）。<span class="badge b-prog">50%</span></li>
+          <li><b>社内報の内容変更</b>：写真の撮り直し・構成の再構築を予定していたが、7月も修正なしで達成0%（予定100%）。2か月連続で未着手。<span class="badge b-hold">2か月連続 未着手</span></li>
+          <li><b>採用募集の周知（HP）</b>：7月は修正なしで達成0%（予定0%）。<span class="badge b-na">修正なし</span></li>
+          <li><b>YouTube・会社紹介動画</b>：チャンネル活用は要検討（0%）。社員研修旅行の動画の一部公開も検討段階。<span class="badge b-hold">要検討</span></li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <!-- エン転職ダイレクト 効果データ -->
+  <section class="alt">
+    <div class="wrap">
+      <h2 class="title">📨 エン転職ダイレクト 求人別効果（全期間累計）</h2>
+      <div class="table-wrap">
+        <table class="meo">
+          <thead>
+            <tr>
+              <th>求人</th>
+              <th>配信数</th>
+              <th>開封数</th>
+              <th>閲覧数</th>
+              <th>応募数</th>
+              <th>応募率（他社平均）</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr><th>提案営業</th><td>401</td><td>306</td><td>99</td><td>13</td><td class="up">3.2%（1.8%）</td></tr>
+            <tr><th>購買担当</th><td>87</td><td>74</td><td>41</td><td>7</td><td class="up">8.0%（2.0%）</td></tr>
+            <tr><th>機械設計</th><td>37</td><td>30</td><td>12</td><td>1</td><td class="up">2.7%（2.0%）</td></tr>
+            <tr><th>電気設計</th><td>11</td><td>7</td><td>3</td><td>0</td><td class="down">0%（2.0%）</td></tr>
+          </tbody>
+          <tfoot>
+            <tr><th>サービス全体</th><td>536</td><td>417</td><td>155</td><td>21</td><td class="flat">3.9%</td></tr>
+          </tfoot>
+        </table>
+      </div>
+      <div class="note-box">
+        ※ エン転職ダイレクト「2026年8月10日 定例MTG資料」より。数値は全期間累計（月次ではありません）。カッコ内は同一職種カテゴリーの他社平均。サービス全体では開封率77.8%（開封417／配信536）、閲覧率37.2%（閲覧155／開封417）、CVR13.5%（応募21／閲覧155）、応募率3.9%（応募21／送信536）で、エン転職社の資料ではいずれも他社平均を大きく上回る成果と評価されています。再アプローチは1回目活用率90.3%（484/536）、2回目71.5%（383/536）、再アプローチ経由の応募は累計13件。
+      </div>
+    </div>
+  </section>
+
+  <!-- MEO拠点別データ -->
+  <section>
+    <div class="wrap">
+      <h2 class="title">📍 MEO拠点別データ</h2>
+      <div class="alert-box">
+        <b>⚠️ 2026年7月度のMEO月次レポートは、本レポート作成時点で未着です。</b><br>
+        以下は直近で受領済みの<b>2026年6月度</b>の数値です。7月度の実数は次回レポートで反映します。
+      </div>
+      <div class="table-wrap">
+        <table class="meo">
+          <thead>
+            <tr>
+              <th>拠点</th>
+              <th>エリア</th>
+              <th>閲覧ユーザー数</th>
+              <th>前月比</th>
+              <th>反応数</th>
+              <th>前月比</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr><th>本社</th><td>大阪府</td><td>848</td><td class="down">89%（-105）</td><td>52</td><td class="down">70%（-22）</td></tr>
+            <tr><th>第一工場</th><td>京都府</td><td>596</td><td class="down">95%（-31）</td><td>111</td><td class="down">83%（-22）</td></tr>
+            <tr><th>第二工場</th><td>京都府</td><td>122</td><td class="down">92%（-11）</td><td>70</td><td class="up">146%（+22）</td></tr>
+            <tr><th>第三工場</th><td>京都府</td><td>139</td><td class="down">80%（-35）</td><td>35</td><td class="down">49%（-36）</td></tr>
+            <tr><th>和歌山営業所</th><td>和歌山県</td><td>103</td><td class="down">74%（-37）</td><td>51</td><td class="down">94%（-3）</td></tr>
+            <tr><th>六甲アイランド梱包工場</th><td>兵庫県</td><td>0</td><td class="flat">未計測</td><td>0</td><td class="flat">未計測</td></tr>
+          </tbody>
+          <tfoot>
+            <tr><th>合計（計測5拠点・2026年6月）</th><td>—</td><td>1,808</td><td class="flat">—</td><td>319</td><td class="flat">—</td></tr>
+          </tfoot>
+        </table>
+      </div>
+      <div class="note-box">
+        ※ 閲覧ユーザー数＝Google検索＋Googleマップでの閲覧ユーザー数。反応数＝電話をかける＋ルート検索＋ウェブサイトへのアクセスの合計。数値はインターロック提供「2026年6月度 MEO月次レポート」（対象期間2026/6/1〜6/30）に基づきます。<b>2026年7月度のレポートは未着のため、7月の実数は未計測です。</b>六甲アイランド梱包工場は現時点でプロフィール未整備のためデータ計測なし。
+      </div>
+    </div>
+  </section>
+
+  <!-- KPI進捗状況 -->
+  <section class="alt">
+    <div class="wrap">
+      <h2 class="title">📊 KPI進捗状況（活動報告書 7月達成度）</h2>
+
+      <div class="prog-group">
+        <h3>インナーブランディング</h3>
+        <div class="prog-row"><div class="pr-head"><span>投稿用画像撮影（予定100%）</span><span class="pct">100%</span></div><div class="bar"><span style="width:100%"></span></div></div>
+        <div class="prog-row"><div class="pr-head"><span>ストーリー・リール動画の活用（予定100%）</span><span class="pct">100%</span></div><div class="bar"><span style="width:100%"></span></div></div>
+        <div class="prog-row"><div class="pr-head"><span>SNSやサイトの活用（予定100%）</span><span class="pct">100%</span></div><div class="bar"><span style="width:100%"></span></div></div>
+        <div class="prog-row"><div class="pr-head"><span>HPの修正とブラッシュアップ（予定100%）</span><span class="pct">100%</span></div><div class="bar"><span style="width:100%"></span></div></div>
+        <div class="prog-row"><div class="pr-head"><span>新しい福利厚生情報（予定70%）</span><span class="pct">100%</span></div><div class="bar"><span style="width:100%"></span></div></div>
+        <div class="prog-row"><div class="pr-head"><span>GBPの活用（予定70%）</span><span class="pct">60%</span></div><div class="bar behind"><span style="width:60%"></span></div></div>
+        <div class="prog-row"><div class="pr-head"><span>1,000フォロワーの獲得（予定20%／414名）</span><span class="pct">20%</span></div><div class="bar"><span style="width:20%"></span></div></div>
+      </div>
+
+      <div class="prog-group">
+        <h3>ブランディング</h3>
+        <div class="prog-row"><div class="pr-head"><span>サジェスト対策（5月完了・維持）</span><span class="pct">完了</span></div><div class="bar"><span style="width:100%"></span></div></div>
+        <div class="prog-row"><div class="pr-head"><span>LLMO（AIO）対策（予定20%）</span><span class="pct">20%</span></div><div class="bar"><span style="width:20%"></span></div></div>
+        <div class="prog-row"><div class="pr-head"><span>HP新規ページの制作（予定50%）</span><span class="pct">30%</span></div><div class="bar behind"><span style="width:30%"></span></div></div>
+        <div class="prog-row"><div class="pr-head"><span>YouTubeチャンネルの活用（予定0%・要検討）</span><span class="pct">0%</span></div><div class="bar"><span style="width:0%"></span></div></div>
+      </div>
+
+      <div class="prog-group">
+        <h3>リクルーティング</h3>
+        <div class="prog-row"><div class="pr-head"><span>エン転職ダイレクト（予定100%／スカウト90件・面談2件・2名入社）</span><span class="pct">90%</span></div><div class="bar behind"><span style="width:90%"></span></div></div>
+        <div class="prog-row"><div class="pr-head"><span>エン転職広告（工場内勤務）</span><span class="pct">完了</span></div><div class="bar"><span style="width:100%"></span></div></div>
+        <div class="prog-row"><div class="pr-head"><span>採用募集の周知・HPの活用（予定0%／修正なし）</span><span class="pct">0%</span></div><div class="bar"><span style="width:0%"></span></div></div>
+      </div>
+
+      <div class="prog-group">
+        <h3>社内システムの拡充</h3>
+        <div class="prog-row"><div class="pr-head"><span>課題抽出と検討・AIツールの利用（予定50%）</span><span class="pct">50%</span></div><div class="bar"><span style="width:50%"></span></div></div>
+        <div class="prog-row"><div class="pr-head"><span>内容の変更・写真の撮り直し／構成再構築（予定100%）</span><span class="pct">0%</span></div><div class="bar behind"><span style="width:0%"></span></div></div>
+      </div>
+
+      <div class="prog-group">
+        <h3>MEO・Googleビジネスプロフィール（外部レポート由来）</h3>
+        <div class="prog-row"><div class="pr-head"><span>6拠点のGBP運用・月次レポーティング</span><span class="pct na">7月分 未計測</span></div><div class="bar na"><span style="width:100%"></span></div></div>
+        <div class="prog-row"><div class="pr-head"><span>反応（ルート検索等）の獲得・維持</span><span class="pct na">7月分 未計測</span></div><div class="bar na"><span style="width:100%"></span></div></div>
+        <div class="prog-row"><div class="pr-head"><span>六甲アイランド梱包工場のプロフィール整備</span><span class="pct">0%</span></div><div class="bar"><span style="width:0%"></span></div></div>
+      </div>
+
+      <div class="note-box">
+        ※ 「インナーブランディング」「ブランディング」「リクルーティング」「社内システムの拡充」の各%は、活動報告書スプレッドシート（活動報告2版・2026年シート）の<b>7月「達成度」</b>をそのまま記載しています。カッコ内は同シートの「予定」%です。オレンジ色のバーは予定を下回っている項目です。<b>MEOの上位2項目は、7月度のMEO月次レポートが未着のため「未計測」としています。</b>
+      </div>
+    </div>
+  </section>
+
+  <!-- 活動報告書 全項目 -->
+  <section>
+    <div class="wrap">
+      <h2 class="title">📋 活動報告書 全項目一覧（2026年7月）</h2>
+      <div class="stat-line">
+        <span>全23項目</span><span>進行中 14</span><span>完了 2</span><span>中断 5</span><span>要検討 2</span>
+      </div>
+      <div class="table-wrap">
+        <table class="act">
+          <thead>
+            <tr>
+              <th>KGI</th><th>KPI</th><th>内容</th><th>状況</th><th>7月 予定</th><th>7月 達成度</th><th>報告コメント</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr><td class="kgi">インナーブランディング</td><td>インスタグラム運用</td><td class="n">投稿用画像撮影</td><td class="c"><span class="st st-prog">進行中</span></td><td class="c">100%</td><td class="c">100%</td><td>社員研修旅行からの引用</td></tr>
+            <tr><td class="kgi">インナーブランディング</td><td>インスタグラム運用</td><td class="n">1,000フォロワーの獲得</td><td class="c"><span class="st st-prog">進行中</span></td><td class="c">20%</td><td class="c">20%</td><td>414フォロワー（前月417）</td></tr>
+            <tr><td class="kgi">インナーブランディング</td><td>インスタグラム運用</td><td class="n">ストーリー・リール動画の活用</td><td class="c"><span class="st st-prog">進行中</span></td><td class="c">100%</td><td class="c">100%</td><td>フィード1件、リール1件、ストーリー1件<span class="cont">※</span></td></tr>
+            <tr><td class="kgi">インナーブランディング</td><td>インスタグラム運用</td><td class="n">Facebookから分析情報取得</td><td class="c"><span class="st st-stop">中断</span></td><td class="c">—</td><td class="c">—</td><td>—</td></tr>
+            <tr><td class="kgi">インナーブランディング</td><td>インスタグラム運用</td><td class="n">その他SNSのアカウント連携</td><td class="c"><span class="st st-stop">中断</span></td><td class="c">—</td><td class="c">—</td><td>—</td></tr>
+            <tr><td class="kgi">インナーブランディング</td><td>X（旧Twitter）運用</td><td class="n">インスタグラムとの連携</td><td class="c"><span class="st st-stop">中断</span></td><td class="c">—</td><td class="c">—</td><td>—</td></tr>
+            <tr><td class="kgi">インナーブランディング</td><td>X（旧Twitter）運用</td><td class="n">フォロワーを増やす（100フォロワー）</td><td class="c"><span class="st st-stop">中断</span></td><td class="c">—</td><td class="c">—</td><td>—</td></tr>
+            <tr><td class="kgi">インナーブランディング</td><td>ホームページの再考</td><td class="n">HPの修正とブラッシュアップ</td><td class="c"><span class="st st-prog">進行中</span></td><td class="c">100%</td><td class="c">100%</td><td>CTIHPブラッシュアップ／新規ページの非公開／noteの構想作成</td></tr>
+            <tr><td class="kgi">インナーブランディング</td><td>ホームページの再考</td><td class="n">GBPの活用</td><td class="c"><span class="st st-prog">進行中</span></td><td class="c">70%</td><td class="c">60%</td><td>MEO分析<span class="cont">※</span></td></tr>
+            <tr><td class="kgi">インナーブランディング</td><td>ホームページの再考</td><td class="n">SNSやサイトの活用</td><td class="c"><span class="st st-prog">進行中</span></td><td class="c">100%</td><td class="c">100%</td><td>インスタグラム月に1投稿以上<span class="cont">※</span></td></tr>
+            <tr><td class="kgi">インナーブランディング</td><td>福利厚生</td><td class="n">【次期企画】新しい福利厚生情報</td><td class="c"><span class="st st-prog">進行中</span></td><td class="c">70%</td><td class="c">100%</td><td>リゾートワークスのご紹介／アカウントの不要</td></tr>
+            <tr><td class="kgi">ブランディング</td><td>サジェスト対策</td><td class="n">サジェスト対策の展開</td><td class="c"><span class="st st-done">完了</span></td><td class="c">—</td><td class="c">—</td><td>5月に完了。以降は維持</td></tr>
+            <tr><td class="kgi">ブランディング</td><td>LLMO</td><td class="n">LLMO（AIO）対策</td><td class="c"><span class="st st-prog">進行中</span></td><td class="c">20%</td><td class="c">20%</td><td>LLMO分析<span class="cont">※</span></td></tr>
+            <tr><td class="kgi">ブランディング</td><td>HP戦略の見直し</td><td class="n">HP新規ページの制作</td><td class="c"><span class="st st-prog">進行中</span></td><td class="c">50%</td><td class="c">30%</td><td>新規ページの構想／ページの公開スケジュール立て</td></tr>
+            <tr><td class="kgi">ブランディング</td><td>会社紹介動画</td><td class="n">YouTubeチャンネルの活用</td><td class="c"><span class="st st-check">要検討</span></td><td class="c">0%</td><td class="c">0%</td><td>—</td></tr>
+            <tr><td class="kgi">ブランディング</td><td>会社紹介動画</td><td class="n">SNS運用の見直し</td><td class="c"><span class="st st-stop">中断</span></td><td class="c">—</td><td class="c">—</td><td>—</td></tr>
+            <tr><td class="kgi">ブランディング</td><td>会社紹介動画</td><td class="n">社員研修旅行の動画を活用（一部公開）</td><td class="c"><span class="st st-check">要検討</span></td><td class="c">—</td><td class="c">—</td><td>—</td></tr>
+            <tr><td class="kgi">リクルーティング</td><td>採用情報</td><td class="n">採用募集の周知（HPの活用）</td><td class="c"><span class="st st-prog">進行中</span></td><td class="c">0%</td><td class="c">0%</td><td>修正なし<span class="cont">※</span></td></tr>
+            <tr><td class="kgi">リクルーティング</td><td>新卒採用</td><td class="n">新卒採用に向けて（ハローワーク活用）</td><td class="c"><span class="st st-prog">進行中</span></td><td class="c">—</td><td class="c">—</td><td>—</td></tr>
+            <tr><td class="kgi">リクルーティング</td><td>中途採用（営業／機械設計／電気設計）</td><td class="n">エン転職ダイレクト</td><td class="c"><span class="st st-prog">進行中</span></td><td class="c">100%</td><td class="c">90%</td><td>スカウトの送信90件／面談の実施2件</td></tr>
+            <tr><td class="kgi">リクルーティング</td><td>中途採用（工場内勤務）</td><td class="n">エン転職広告</td><td class="c"><span class="st st-done">完了</span></td><td class="c">—</td><td class="c">—</td><td>完了</td></tr>
+            <tr><td class="kgi">社内システムの拡充</td><td>新たな展開</td><td class="n">課題抽出と検討（AIツール・SaaS）</td><td class="c"><span class="st st-prog">進行中</span></td><td class="c">50%</td><td class="c">50%</td><td>AIツールの利用検討<span class="cont">※</span></td></tr>
+            <tr><td class="kgi">社内システムの拡充</td><td>新たな展開</td><td class="n">内容の変更（写真の撮り直し・構成の再構築）</td><td class="c"><span class="st st-prog">進行中</span></td><td class="c">100%</td><td class="c">0%</td><td>修正なし</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="note-box">
+        ※ 活動報告書スプレッドシート「活動報告2版」2026年シートの全23行を、7月列（予定／達成度／報告コメント）とあわせて掲載しています。「—」は当該月に入力のない項目です。<b>報告コメント末尾の「※」は、当月の実績記入が予定内容と同一で、特記すべき変化がなかった「継続運用中」の項目</b>を示します。なお「1,000フォロワーの獲得」「サジェスト対策の展開」の2行については、前月からの推移が分かるよう当社にて補足を加えています（シート原文はそれぞれ「414フォロワー」「完了」）。
+      </div>
+    </div>
+  </section>
+
+  <!-- 戦略的インサイト -->
+  <section class="alt">
+    <div class="wrap">
+      <h2 class="title">💡 戦略的インサイト</h2>
+      <div class="insight-grid">
+        <div class="insight success">
+          <h3>✅ 成功要因</h3>
+          <ul>
+            <li>渡邊さん（機械設計）・田中さん（購買担当）の2名が7月21日に入社。スカウト起点の採用が「内定」から「入社」まで完遂した。</li>
+            <li>スカウト送信数が78件→90件（+12件）へ回復。再スカウトのスパンを2か月→1か月へ短縮した施策が明確に効いた。</li>
+            <li>スカウト効果は他社平均を全指標で上回る（開封率77.8%・閲覧率37.2%・CVR13.5%・応募率3.9%）。母集団の質は担保できている。</li>
+            <li>主力の提案営業は応募率3.2%（他社平均1.8%）と約1.8倍。購買担当は8.0%（他社平均2.0%）と特に高い。</li>
+            <li>再アプローチ施策が継続的に機能（6月11件→7月13件）。1回目90.3%・2回目71.5%と高い活用率を維持。</li>
+            <li>福利厚生（リゾートワークス）は予定70%に対し達成100%と、計画を上回って進捗した。</li>
+            <li>Instagramは月1投稿以上の運用が定着（フィード・リール・ストーリー各1件／達成100%）。</li>
+          </ul>
+        </div>
+        <div class="insight issue">
+          <h3>⚠️ 課題と対策</h3>
+          <ul>
+            <li>7月の新規応募は2件にとどまり、いずれも選考未成立（面談後見送り1件・連絡不通1件）。配信量は回復したが、応募の質・量への転換が次の課題。</li>
+            <li>面談実施2件は目標4件に対して未達。エン転職の提案どおり、転職意欲「高い／かなり高い」層への配信切替と「最終ログイン3日以内」での絞り込みを実行する。</li>
+            <li><b>人材データベースの枯渇が構造的な制約</b>：新規にスカウト可能な営業人材は月10名程度にとどまる。配信数を増やすだけでは限界があり、再アプローチの徹底と検索条件の最適化で対応する必要がある。</li>
+            <li>電気設計は配信11件・応募0件と母集団が薄い。配信量そのものの確保が必要。</li>
+            <li>HP新規ページの制作が予定50%に対し達成30%。ページは非公開のままで、2か月連続の遅れとなっている。公開日を確定させる。</li>
+            <li>社内報（内容の変更）は予定100%に対し達成0%。6月・7月と2か月連続で未着手のため、実施可否を含めて判断が必要。</li>
+            <li>Instagramのフォロワーが417名→414名と微減。投稿の継続だけでは伸びない段階に入っており、打ち手の見直しが必要。</li>
+            <li>MEO 7月度レポートが未着で、6拠点の実数が把握できていない。インターロックへの督促と、六甲アイランド梱包工場のプロフィール整備を進める。</li>
+            <li>X（旧Twitter）・Facebook分析・YouTubeは中断／要検討のまま半年近く動いていない。継続可否を明確に判断する。</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 8月以降ロードマップ -->
+  <section>
+    <div class="wrap">
+      <h2 class="title">🗺️ 8月以降の戦略ロードマップ</h2>
+      <div class="road-step"><div class="no">1</div><div class="txt"><b>入社2名の定着支援</b>：7月21日に入社した渡邊さん・田中さんのオンボーディングをフォローし、早期戦力化と定着につなげる。エン転職からも、採用後の活躍・定着領域での支援について提案を受けている。</div></div>
+      <div class="road-step"><div class="no">2</div><div class="txt"><b>スカウトのターゲット精度を上げる</b>：転職意欲「高い／かなり高い」層へ配信を切り替え、「最終ログイン3日以内」での絞り込みを導入。前年収の条件を外し、希望年収など他の条件で調整する。ホット会員へのアプローチも選択肢に加える。</div></div>
+      <div class="road-step"><div class="no">3</div><div class="txt"><b>2回目の再アプローチを必須化</b>：2回目の活用率が約70%と高く応募に直結しているため、1回目のスカウト送信時に2回目を予約設定する運用に切り替える。</div></div>
+      <div class="road-step"><div class="no">4</div><div class="txt"><b>面談件数の回復</b>：7月実績2件から目標4件へ。35歳〜49歳のミドル・ベテラン層、年収351万〜400万円・601万〜650万円の2軸、大阪・兵庫在住を軸に配信リソースを集中させる。</div></div>
+      <div class="road-step"><div class="no">5</div><div class="txt"><b>電気設計・機械設計の母集団形成</b>：配信数が少なく応募に至っていないため、対象条件を広げて配信量を確保する。なお購買担当は充足したため募集をクローズ済み。</div></div>
+      <div class="road-step"><div class="no">6</div><div class="txt"><b>HP新規ページの公開</b>：2か月連続で遅れている新規ページについて、画像の挿入を完了させ、公開日を確定する。コラムページ・noteの公開スケジュールもあわせて確定する。</div></div>
+      <div class="road-step"><div class="no">7</div><div class="txt"><b>MEOの再開と整備</b>：7月度レポートの受領を確認し、6拠点の数値を把握する。六甲アイランド梱包工場のプロフィール整備を進め、計測対象に加える。</div></div>
+      <div class="road-step"><div class="no">8</div><div class="txt"><b>停滞項目の棚卸し</b>：社内報の内容変更（2か月連続0%）、X・Facebook分析・YouTube（中断／要検討が継続）について、実施するか取りやめるかを判断し、活動報告書の項目を整理する。</div></div>
+    </div>
+  </section>
+
+  <!-- フッター -->
+  <div class="footer">
+    <div class="wrap">
+      <h2>🚀 8月の重点項目</h2>
+      <div class="focus-grid">
+        <div class="focus-item"><span class="ic">🤝</span>入社2名の定着支援</div>
+        <div class="focus-item"><span class="ic">🎯</span>スカウトのターゲット精度向上</div>
+        <div class="focus-item"><span class="ic">🌐</span>HP新規ページの公開</div>
+        <div class="focus-item"><span class="ic">🧹</span>停滞項目の棚卸し</div>
+      </div>
+      <div class="meta">
+        株式会社CTI 月次活動報告／作成：three.T合同会社<br>
+        次回定例MTG（エン転職）：2026年9月3日（木）15:00〜<br>
+        ※ エン転職ダイレクトの実務担当は、来月よりグループ会社の担当者1名が加わり引き継ぎを行います（上津原も引き続き同席します）。
+      </div>
+      <div class="note-box">
+        ※ 本レポートは、①活動報告書スプレッドシート「活動報告2版」2026年シート（全23項目・7月列）、②エン転職ダイレクト「2026年8月10日 定例MTG資料」（選考状況・スカウト効果・再アプローチ実績）、③インターロック提供「2026年6月度 MEO月次レポート」（6拠点、対象期間2026/6/1〜6/30）に基づいて作成しています。KPI進捗の%は①の7月「達成度」を正としています。<b>2026年7月度のMEO月次レポートは本レポート作成時点で未着のため、MEO拠点別データは6月度の数値を掲載し、MEO関連のKPIは「未計測」としています。</b>②の効果データは全期間累計の数値です。
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<script>
+  const HASH = "d9bc841fb4b7511bb85ddd0a39a9d5dfd8ed79bbbb36d4f5adb7ec874e33dde1";
+  async function sha256(str){
+    const buf = await crypto.subtle.digest("SHA-256", new TextEncoder().encode(str));
+    return Array.from(new Uint8Array(buf)).map(b=>b.toString(16).padStart(2,"0")).join("");
+  }
+  async function checkPassword(){
+    const input = document.getElementById("password-input").value;
+    const hash = await sha256(input);
+    if(hash === HASH){
+      document.getElementById("auth-screen").style.display = "none";
+      document.getElementById("report-content").style.display = "block";
+      sessionStorage.setItem("cti_auth_2026_07","1");
+    } else {
+      document.getElementById("auth-error").style.display = "block";
+      document.getElementById("password-input").value = "";
+      document.getElementById("password-input").focus();
+    }
+  }
+  if(sessionStorage.getItem("cti_auth_2026_07")==="1"){
+    document.getElementById("auth-screen").style.display = "none";
+    document.getElementById("report-content").style.display = "block";
+  }
+</script>
+</body>
+</html>
